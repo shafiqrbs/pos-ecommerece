@@ -1,0 +1,36 @@
+{
+    "name": "laupifrpar/pusher-bundle",
+    "description": "A Pusher bundle for Symfony2",
+    "type": "symfony-bundle",
+    "keywords": ["pusher", "nosql", "symfony"],
+    "homepage": "https://github.com/laupifrpar/lopipusherbundle",
+    "license": "MIT",
+    "authors": [{
+        "name": "Pierre-Louis Launay",
+        "email": "laupi.frpar@gmail.com",
+        "homepage": "https://github.com/laupiFrpar",
+        "role": "developer"
+    },{
+        "name": "Community contributors",
+        "homepage": "https://github.com/laupifrpar/lopipusherbundle/contributors"
+    }],
+    "support": {
+        "issues": "https://github.com/laupiFrpar/LopiPusherBundle/issues",
+        "source": "https://github.com/laupiFrpar/LopiPusherBundle"
+    },
+    "require": {
+        "php": ">=5.6",
+        "pusher/pusher-php-server": "^3.0"
+    },
+    "require-dev": {
+        "symfony/config": "~2.7",
+        "symfony/dependency-injection": "~2.7",
+        "symfony/http-kernel": "~2.7",
+        "phpunit/phpunit": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lopi\\Bundle\\PusherBundle\\": ""
+        }
+    }
+}
