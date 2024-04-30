@@ -1,0 +1,39 @@
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+web/css/*
+web/img/*
+web/images/*
+web/js/*
+web/assets
+web/fonts/*
+web/nano.save
+
+bin/*
+!bin/build.sh
+
+app/config/parameters.yml
+
+
+web/.htaccess
+
+
+
+# Composer
+composer.phar
+composer.json
+composer.lock
+
+# IDE
+.idea/*
+.nbproject/*
+
+# OS
+.DS_Store
+Thumbs.db
