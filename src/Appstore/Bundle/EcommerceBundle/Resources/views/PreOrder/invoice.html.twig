@@ -1,0 +1,169 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN inventory_damage HEADER-->
+        <div class="row-fluid row-print">
+            <table class="table">
+                <tr>
+                    <td style="width:65%">
+                        <div class="span4  pull-left invoice-logo-space">
+                            <img src="/{{ entity.ecommerceConfig.globalOption.templateCustomize.webPath('logo') }}">
+                        </div>
+                    </td>
+                    <td style="width:35%">
+                        <div class="span4 pull-right">
+                            <ul class="unstyled">
+                                <li><strong>{{ entity.ecommerceConfig.globalOption.name }}</strong></li>
+                                <li><i class="icon-phone"></i>&nbsp;{{ entity.ecommerceConfig.globalOption.mobile }}</li>
+                                {% if  entity.ecommerceConfig.globalOption.email %}
+                                <li><i class="icon-envelope"></i>&nbsp;{{ entity.ecommerceConfig.globalOption.email }}</li>
+                                {% endif %}
+                                <li><i class="icon-home"></i>&nbsp;{{ entity.ecommerceConfig.globalOption.contactPage.address1 }}</li>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{% if entity.ecommerceConfig.globalOption.contactPage.thana is not empty %}{{ entity.ecommerceConfig.globalOption.contactPage.thana.name }},{% endif %}
+                                    {% if entity.ecommerceConfig.globalOption.contactPage.thana is not empty %}{{ entity.ecommerceConfig.globalOption.contactPage.district.name }},{% endif %}
+                                    {{ entity.ecommerceConfig.globalOption.contactPage.postalCode }}
+                                </li>
+                                <li><i class="icon-link"></i>&nbsp;www.{{ entity.ecommerceConfig.globalOption.domain }}</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN inventory_damage CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Invoice Details</div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            <div class="row-fluid">
+                                <table class="table">
+                                    <tr>
+                                    <td>
+                                <div class="span4">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Customer name  #:</strong>&nbsp;{{ entity.createdBy.profile.name }}</li>
+                                        <li><strong>Mobile:</strong>&nbsp;{{ entity.createdBy.profile.mobile }}</li>
+                                        <li><strong>Email:</strong>&nbsp;{{ entity.createdBy.email }}</li>
+                                        <li><strong>Address:</strong>&nbsp;{{ entity.createdBy.profile.address }}</li>
+                                        <li><strong>{{ entity.delivery|capitalize }}:</strong>&nbsp;{% if entity.delivery == 'pickup'  %} {{ entity.ecommerceConfig.pickupLocation }}  {% else %} {{ entity.address }}{% endif %}</li>
+                                    </ul>
+                                </div>
+                                </td>
+                                <td>
+                                <div class="span4 invoice-payment">
+                                    <h4>Payment Details:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Total BDT:</strong>&nbsp;{{ entity.grandTotal|number_format() }}</li>
+                                        <li><strong>Advance BDT:</strong>&nbsp;{{ entity.advanceAmount|number_format() }}</li>
+                                        <li><strong>Due BDT:</strong>&nbsp;{{ entity.dueAmount|number_format() }}</li>
+                                        <li><strong>Progress:</strong>&nbsp;{{  entity.process|capitalize }}</li>
+                                    </ul>
+                                </div>
+                                </td>
+                                <td>
+                                <div class="span4">
+                                    <h4>Payment method:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Payment Type:</strong>&nbsp;{{ entity.paymentType.name }}</li>
+                                        {% if entity.paymentType.id == 3 %}
+                                            {% if entity.bankAccount is not empty %}<li><strong>Bank name:</strong>&nbsp;{{ entity.bankAccount.bank.name }}{% endif %}</li>
+                                            {% if entity.bankAccount is not empty %}<li><strong>Account no:</strong>&nbsp;{{ entity.bankAccount.accountNo }}{% endif %}</li>
+                                            {% if entity.bankAccount is not empty %}<li><strong>Branch Address:</strong>&nbsp;{{ entity.bankAccount.branch }}{% endif %}</li>
+                                        {% endif %}
+                                        {% if entity.paymentType.id == 4 %}
+                                            {% if entity.bkashAccount is not empty %}<li><strong>Mobile no:</strong>&nbsp;{{ entity.bkashAccount.mobile }}</li>{% endif %}
+                                            {% if entity.bkashAccount is not empty %}<li><strong>Account Type:</strong>&nbsp;{{ entity.bkashAccount.accountType  }}</li>{% endif %}
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                </td>
+                                </tr>
+                                </table>
+                            </div>
+
+
+
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <td><i class="icon-list"></i></td>
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Name</th>
+                                    <th class="numeric" >Quantity</th>
+                                    <th class="numeric" >USD</th>
+                                    <th class="numeric" >Total</th>
+                                    <th class="numeric" >Unit</th>
+                                    <th class="numeric" >Total</th>
+                                    <th class="numeric" >Shipping</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in entity.preOrderItems %}
+                                    <tr id="remove-{{ item.id }}">
+                                        <td>
+                                            {{ loop.index }}
+                                        </td>
+                                        <td class="" >{{ item.updated|date('d-m-Y') }}</td>
+                                        <td class="" >{{ item.name|raw }}</td>
+                                        <td class="numeric" >{{ item.quantity }}</td>
+                                        <td class="numeric" >${{ item.dollar }}</td>
+                                        <td class="numeric" >${{ item.totalDollar }}</td>
+                                        <td class="numeric" >{{ item.price }}</td>
+                                        <td class="numeric" >{{ item.total|number_format }}</td>
+                                        <td class="numeric" >{{ item.shippingCharge|number_format }}</td>
+
+
+                                    </tr>
+                                    <tr id="show-{{ item.id }}" class="showing-overview">
+                                        <td colspan="10">{{ item.details }}</td>
+                                    </tr>
+                                {% endfor %}
+                                    <tr>
+                                        <td class="numeric" colspan="3">&nbsp;</td>
+                                        <td class="numeric" >{{ entity.quantity }}</td>
+                                        <td class="numeric" ><strong>Total USD:</strong></td>
+                                        <td class="numeric" >${{ entity.dollar }}</td>
+                                        <td class="numeric" ><strong>Sub-total:</strong></td>
+                                        <td class="numeric" >{{ entity.total|number_format }}</td>
+                                        <td class="numeric" colspan="2">{{ entity.shippingCharge|number_format }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="numeric" colspan="4">&nbsp;</td>
+                                        <td class="numeric" colspan="4" ><span class="pull-right"><strong>Grand Total (Sub-total + Shipping Charge):</strong></span></td>
+                                        <td class="numeric" colspan="2" >{{ ( entity.total + entity.shippingCharge)|number_format }}</td>
+                                      </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <!--/span-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@EcommerceBundle/Resources/public/css/print.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block documentready %}
+   window.print();
+{% endblock %}
+

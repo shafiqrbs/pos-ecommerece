@@ -1,0 +1,121 @@
+Index: src/Frontend/FrontentBundle/Resources/views/Template/Desktop/Cosmetic/productDetails.html.twig
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Frontend/FrontentBundle/Resources/views/Template/Desktop/Cosmetic/productDetails.html.twig	(revision 41fd7aac6c08b7f60e0670190437b5e6080dd4b2)
++++ src/Frontend/FrontentBundle/Resources/views/Template/Desktop/Cosmetic/productDetails.html.twig	(revision )
+@@ -6,7 +6,7 @@
+         <div class="container">
+             <ol class="breadcrumb">
+                 <li><a href="{{ path('ecommercesubdomain') }}"><span class="glyphicon glyphicon-home"></span></a></li>
+-                <li class=""><a href="{{ path('webservice_product',{'subdomain':globalOption.subdomain}) }}">Product</a></li>
++                <li class=""><a href="{{ path(globalOption.subDomain ~ '_webservice_product',{'subdomain':globalOption.subdomain}) }}">Product</a></li>
+                 <li class="active"><span>{% if product.masterItem is not empty and globalOption.ecommerceConfig.showMasterName == 1 %}{{ product.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ product.name }}</span></li>
+             </ol>
+         </div>
+@@ -43,21 +43,21 @@
+                             <ul class="product-nav" >
+                             {% if next is not empty %}
+                                 <li class="dropdown">
+-                                    <a href="#" onclick="window.location='{{ path('webservice_product_details',{'subdomain': globalOption.subDomain,'item':next.slug }) }}'" id="dropdownMenu1" class="btn btn-default btn-sm page-button dropdown-toggle"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"><span class="glyphicon glyphicon-chevron-left"></span></a>
++                                    <a href="#" onclick="window.location='{{ path(globalOption.subDomain ~ '_webservice_product_details',{'subdomain': globalOption.subDomain,'item':next.slug }) }}'" id="dropdownMenu1" class="btn btn-default btn-sm page-button dropdown-toggle"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                         <li><img class="img-responsive" src="{% if next.webPath is not empty  %}{{ image(next.webPath).resize(400,400) }}{% elseif next.masterItem.webPath is defined and next.masterItem.webPath is not empty %}{{ image(next.masterItem.webPath).resize() }}{% endif %}"></li>
+                                         <li class="divider"></li>
+-                                        <li><a href="{{ path('webservice_product_details',{'subdomain': globalOption.subDomain,'item':next.slug }) }}">{% if next.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ next.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ next.webName }}</a></li>
++                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product_details',{'subdomain': globalOption.subDomain,'item':next.slug }) }}">{% if next.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ next.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ next.webName }}</a></li>
+                                     </ul>
+                                 </li>
+                             {% endif %}
+                             {% if previous is not empty %}
+                                 <li class="dropdown">
+-                                    <a href="#" onclick="window.location='{{ path('webservice_product_details',{'subdomain': globalOption.subDomain,'item':previous.slug }) }}'" id="dropdownMenu2" class="btn btn-default btn-sm page-button dropdown-toggle"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true" ><span class="glyphicon glyphicon-chevron-right"></span></a>
++                                    <a href="#" onclick="window.location='{{ path(globalOption.subDomain ~ '_webservice_product_details',{'subdomain': globalOption.subDomain,'item':previous.slug }) }}'" id="dropdownMenu2" class="btn btn-default btn-sm page-button dropdown-toggle"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true" ><span class="glyphicon glyphicon-chevron-right"></span></a>
+                                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                                         <li><img class="img-responsive" src="{% if previous.webPath is not empty  %}{{ image(previous.webPath).resize(400,400) }}{% elseif previous.masterItem.webPath is defined and previous.masterItem.webPath is not empty %}{{ image(previous.masterItem.webPath).resize() }}{% endif %}"></li>
+                                         <li class="divider"></li>
+-                                        <li><a href="{{ path('webservice_product_details',{'subdomain': globalOption.subDomain,'item':previous.slug }) }}">{% if previous.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ previous.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ previous.webName }}</a></li>
++                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product_details',{'subdomain': globalOption.subDomain,'item':previous.slug }) }}">{% if previous.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ previous.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ previous.webName }}</a></li>
+                                     </ul>
+                                 </li>
+                             {% endif %}
+@@ -129,7 +129,7 @@
+                                     <div class="rectangle-list">
+                                         <ol>
+                                             {% for brand in brands %}
+-                                                <li><a href="{{ path('webservice_product_brand',{'subdomain': globalOption.subDomain,'id':brand.id }) }}">{{ brand.name }}</a></li>
++                                                <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'id':brand.id }) }}">{{ brand.name }}</a></li>
+                                             {% endfor %}
+                                         </ol>
+                                     </div>
+@@ -294,7 +294,7 @@
+                                                   </button>
+                                                 {% if  globalOption.ecommerceConfig.cart == 1 %}
+                                                     <input type="hidden" name="productImg"  value="{% if product.webPath is not empty %}{{ product.webPath }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ product.masterItem.webPath }}{% endif %}">
+-                                                    <button type="submit" class="btn btn-lg btn-info cartSubmit" data-url="{{ path('webservice_product_cart', {'subdomain':globalOption.subDomain, 'product' : product.id,'subitem' : subitem.id }) }}">
++                                                    <button type="submit" class="btn btn-lg btn-info cartSubmit" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart', {'subdomain':globalOption.subDomain, 'product' : product.id,'subitem' : subitem.id }) }}">
+                                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;Add to cart
+                                                     </button>
+                                                 {% endif %}
+@@ -378,20 +378,20 @@
+                                         <div class="product-feature-box list-group-image">
+                                             <img class="img-responsive" data-match-height="item-promotion-img" src="{% if product.webPath is not empty  %}{{ image(product.webPath).scaleResize(400,400) }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ image(product.masterItem.webPath).scaleResize(400,400) }}{% endif %}" alt="">
+                                             <div class="product-feature-box-content">
+-                                                <span class="post">{{ product.webName }}</span>
++                                                <span class="post">{% if product.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ product.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ product.name }}</span>
+                                             </div>
+                                             <ul class="social">
+-                                                <li><a data-url="{{ path('webservice_product_modal',{'subdomain': globalOption.subDomain,'item':product.id }) }}" href="javascript:" class="preview" ><i class="fa fa-eye"></i></a></li>
+-                                                <li><a  href="{{ path('webservice_product_details',{'subdomain': globalOption.subDomain,'item':product.slug }) }}" ><i class="fa fa-link"></i></a></li>
++                                                <li><a data-url="{{ path(globalOption.subDomain ~ '_webservice_product_modal',{'subdomain': globalOption.subDomain,'item':product.id }) }}" href="javascript:" class="preview" ><i class="fa fa-eye"></i></a></li>
++                                                <li><a  href="{{ path(globalOption.subDomain ~ '_webservice_product_details',{'subdomain': globalOption.subDomain,'item':product.slug }) }}" ><i class="fa fa-link"></i></a></li>
+                                             </ul>
+                                         </div>
+                                         <div class="caption">
+                                             <div class="row">
+                                                 <div class="row-fluid">
+                                                     {% if globalOption.ecommerceConfig.showBrand == 1 %}
+-                                                        <p class="group inner brand text-center" ><a href="{{ path('webservice_product_brand',{'subdomain': globalOption.subDomain,'id':product.id }) }}"><span>{% if product.brand is not empty %}{{ product.brand.name }}{% endif %}</span></a> </p>
++                                                        <p class="group inner brand text-center" ><a href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'id':product.id }) }}"><span>{% if product.brand is not empty %}{{ product.brand.name }}{% endif %}</span></a> </p>
+                                                     {% endif %}
+-                                                    <p class="group inner product-name text-center" ><a href="{{ path('webservice_product_modal',{'subdomain': globalOption.subDomain,'item':product.id }) }}"><strong>{% if product.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ product.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ product.name }}</strong></a> </p>
++                                                    <p class="group inner product-name text-center" ><a href="{{ path(globalOption.subDomain ~ '_webservice_product_modal',{'subdomain': globalOption.subDomain,'item':product.id }) }}"><strong>{% if product.masterItem is not empty and  globalOption.ecommerceConfig.showMasterName == 1 %}{{ product.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ product.name }}</strong></a> </p>
+                                                 </div>
+                                                 <div class="row-fluid">
+                                                     <div class="col-xs-12 col-md-12 text-center"><strong class="currency">{{ globalOption.ecommerceConfig.currency }}&nbsp;{% if product.discount is not empty  %}<strike>{% endif %}{{ product.salesPrice|number_format() }}{% if product.discount is not empty  %}</strike>{% endif %}{% if product.discount is not empty  %}&nbsp;{{ product.discountPrice|number_format() }}{% endif %}</strong></div>
+@@ -523,13 +523,14 @@
+     autoPlay:false,
+     rewindNav:false
+     });
++
+     // Custom Navigation Events
+     $(".next").click(function(){
+-    owlCategory.trigger('owl.next');
++    owlFeatureBrand.trigger('owl.next');
+     })
+ 
+     $(".prev").click(function(){
+-    owlCategory.trigger('owl.prev');
++    owlFeatureBrand.trigger('owl.prev');
+     })
+ 
+     var owlPromotion = $("#promotion-slider");
+Index: app/Resources/assets/template/desktop/cosmetic/css/style.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/Resources/assets/template/desktop/cosmetic/css/style.css	(revision 41fd7aac6c08b7f60e0670190437b5e6080dd4b2)
++++ app/Resources/assets/template/desktop/cosmetic/css/style.css	(revision )
+@@ -998,10 +998,6 @@
+     color: #f39426;
+ }
+ 
+-.caption .currency{
+-    color: #ffffff;
+-}
+-
+ .deliveryBox{
+     padding:5px 0 ;
+ }

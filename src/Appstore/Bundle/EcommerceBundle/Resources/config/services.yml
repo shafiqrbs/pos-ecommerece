@@ -1,0 +1,18 @@
+services:
+#    appstore_inventory.example:
+#        class: Appstore\Bundle\InventoryBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+
+    appstore_inventory_sales_import:
+        class: Appstore\Bundle\InventoryBundle\Importer\SalesExcel
+        calls:
+            - [ setContainer, [ @service_container ] ]
+
+    appstore_ecommerce.importer.excel_data_reader:
+        class: Appstore\Bundle\EcommerceBundle\Importer\ItemDataReader
+        arguments: [ @phpexcel ]
+
+    settong.poItemRepo:
+      class: Appstore\Bundle\InventoryBundle\Service\PosItemManager
+      arguments: [@doctrine]

@@ -1,0 +1,41 @@
+ecommercetemplate:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Template:index" }
+
+ecommercetemplate_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:Template:show" }
+
+ecommercetemplate_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:Template:new" }
+
+ecommercetemplate_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:Template:create" }
+    methods:  POST
+
+ecommercetemplate_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Template:edit" }
+
+ecommercetemplate_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Template:update" }
+    methods:  [POST, PUT]
+
+ecommercetemplate_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:Template:delete" }
+
+ecommercetemplate_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:Template:status" }
+
+ecommercetemplate_resizing:
+    path:     /resizing
+    defaults: { _controller: "EcommerceBundle:Template:resize" }
+
+ecommercetemplate_sorted:
+    path:     /sorted
+    defaults: { _controller: "EcommerceBundle:Template:sorted" }

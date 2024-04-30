@@ -1,0 +1,272 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    View Product Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn purple" href="{{ path('ecommerce_item_download') }}" target="_blank"><i class="icon-download"></i>&nbsp; Download</a>
+                                {% if config.globalOption.ecommerceConfig.isInventoryStock == 1  %}
+                                <a class="btn red" href="{{ path('item_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create New</a>
+                                {% else %}
+                                <a class="btn red" href="{{ path('ecommerce_item_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create New</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="category" name="category" class="span12 m-wrap select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}" autocomplete="off" placeholder="Enter product category name ">
+
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="brand" name="brand" class="span12 m-wrap select2Brand" value="{% if searchForm.brand is defined %}{{ searchForm.brand }}{% endif %}"  autocomplete="off" placeholder="Enter brand name">
+                                        </div>
+                                        <div class="span6">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <input type="text" id="name" name="name" class="span11 m-wrap" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}" autocomplete="off" placeholder="Enter item name ">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <th class="numeric" >Brand</th>
+                                    <th {% if pagination.isSorted('item.path') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Image', 'item.path') }}{% if( direction == 'desc' and sort == 'item.path') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('brand.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Brand Name', 'brand.name') }}{% if( direction == 'desc' and sort == 'brand.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('item.webName') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Name', 'item.webName') }}{% if( direction == 'desc' and sort == 'item.webName') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('category.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Category', 'category.name') }}{% if( direction == 'desc' and sort == 'category.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Cat</th>
+
+                                    <th class="numeric" >Sales</th>
+                                    <th class="numeric" >Discount</th>
+                                    <th class="numeric" >In</th>
+                                    <th class="numeric" >Out</th>
+                                    <th class="numeric" >Remin Qty</th>
+                                    <th {% if pagination.isSorted('item.discount') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Discount', 'item.discount') }}{% if( direction == 'desc' and sort == 'item.discount') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('item.promotion') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Promotion', 'item.promotion') }}{% if( direction == 'desc' and sort == 'item.promotion') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('item.status') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Status', 'item.status') }}{% if( direction == 'desc' and sort == 'item.status') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="purchaseentity" >
+                                {% for entity in pagination %}
+                                    <tr class="remove-{{ entity.id }}">
+                                        <td>
+                                            {% if entity.subProduct == 1 %}
+                                            <span class="badge badge-success toggle badge-custom" id="{{ entity.id  }}" ><span>[+]</span></span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" ><input type="checkbox" data-url="{{ path('ecommerce_item_checkbox_applicable',{'id':entity.id,'applicable':'IsFeatureBrand'}) }}" name="IsFeatureBrand" class="isApplicable" {% if entity.isFeatureBrand == 1 %} checked="checked" {% endif %} value="{{ entity.isFeatureBrand }}"></td>
+                                        <td class="numeric" >
+                                            {% if entity.webPath %}
+                                                <a class=""  href="{{ path('ecommerce_item_upload',{id:entity.id}) }}"  >
+                                                    <img class="fileupload-preview fileupload-exists thumbnail" alt="" src="{{ image(entity.webPath).resize(40,40) }}">
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ path('ecommerce_item_upload',{id:entity.id}) }}" class="">
+                                                    <img class="fileupload-preview fileupload-exists thumbnail" alt="" src="http://www.placehold.it/250x250/EFEFEF/AAAAAA&amp;text=no+image">
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >
+                                            <a  data-type="select" class="editable" id="brand" data-name="Brand" href="#" data-source="{{ path('ecommerce_item_inline_brand') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.brand is defined and entity.brand is not empty %}{{ entity.brand.id }}{% endif %}" data-original-title="Enter Brand name">{% if entity.brand is defined and entity.brand is not empty %}{{ entity.brand.name }}{% endif %}</a>
+                                        </td>
+                                        <td><a  data-type="text" class="editable" id="{{ entity.id }}" data-name="Name" href="#"   data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{{ entity.name }}" data-original-title="Enter product name">{{ entity.name }}</a></td>
+                                        <td class="numeric" >
+                                            <a  data-type="select" class="editable" id="Category" data-name="Category" href="#" data-source="{{ path('ecommerce_item_inline_category_search') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.category is defined and entity.category is not empty %}{{ entity.category.id }}{% endif %}" data-original-title="Enter category name">{% if entity.category is defined and entity.category is not empty %}{{ entity.category.name }}{% endif %}</a>
+                                        </td>
+                                        <td class="numeric" ><input type="checkbox" data-url="{{ path('ecommerce_item_checkbox_applicable',{'id':entity.id,'applicable':'IsFeatureCategory'}) }}" name="IsFeatureCategory" class="isApplicable" {% if entity.isFeatureCategory == 1 %} checked="checked" {% endif %} value="{{ entity.isFeatureCategory }}"></td>
+
+                                        <td class="numeric">{% if entity.inventoryItem %}{{ entity.inventoryItem.salesPrice }}{% endif %}</td>
+                                        <td class="numeric">{% if entity.inventoryItem %}{{ entity.inventoryItem.discountPrice }}{% endif %}</td>
+                                        <td class="numeric" > {% if entity.inventoryItem %} {{ entity.inventoryItem.purchaseQuantity }} {% else %}  {{ entity.purchaseQuantity }} {% endif %}</td>
+                                        <td class="numeric" > {% if entity.inventoryItem %} {{ entity.inventoryItem.salesQuantity }} {% else %}  {{ entity.salesQuantity }} {% endif %}</td>
+                                        <td class="numeric" > {% if entity.inventoryItem %} {{ entity.inventoryItem.remainingQnt }} {% else %}  {{ entity.quantity }} {% endif %}</td>
+                                        <td class="numeric" >
+                                            <a  data-type="select" class="editable" id="discount" data-name="Discount" href="#" data-source="{{ path('ecommerce_item_inline_discount_search') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.discount is not empty %}{{ entity.discount.id }}{% endif %}" data-original-title="Enter discount method">{% if entity.discount is not empty %}{{ entity.discount.name }}-({{ entity.discount.discountAmount }}) {% if  entity.discount.type == 'percentage' %}%{% endif %}{% endif %}</a>
+                                        </td>
+                                        <td class="numeric" >
+                                            <a  data-type="select" class="editable" id="promotion" data-name="Promotion" href="#" data-source="{{ path('ecommerce_item_inline_tag_search') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.tag is defined and entity.tag is not empty %}{{ entity.id }}{% endif %}" data-original-title="Enter promotion name">{% if entity.promotion is defined and entity.promotion is not empty %}{{ entity.promotion.name }}{% endif %}</a>
+                                        </td>
+
+                                        <td class="numeric" >
+                                            {% if entity.status == 1 %}
+                                                <a href="{{ path('ecommerce_item_status', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-ok"></i>&nbsp;</a>
+                                            {% else %}
+                                                <a href="{{ path('ecommerce_item_status', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-remove"></i></a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >
+                                            <div class="actions">
+                                                <div class="btn-group">
+                                                    <a href="{{ path('ecommerce_item_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i>&nbsp;</a>
+                                                    <a href="{{ path('ecommerce_item_show',{'id':entity.id}) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                                    <a href="javascript:" data-id="{{ entity.id }}"  data-url="{{ path('ecommerce_item_remove',{'id':entity.id}) }}" class="btn red mini remove" ><i class="icon-trash"></i></a>
+                                                    {% if entity.inventoryItem is empty %}
+                                                    <a target="_blank" href="{{ path('ecommerce_item_copy',{'id':entity.id}) }}" class="btn blue mini" ><i class="icon-copy"></i>&nbsp;Copy</a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% if entity.subProduct == 1 %}
+                                    <tr id="show-{{ entity.id }}" class="showing-overview">
+                                        <td colspan="16">
+                                            {% if entity.itemSubs is defined and  entity.itemSubs is not empty  %}
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr class="head-green">
+                                                        <td>&nbsp;&nbsp;<i class="icon-reorder"></i></td>
+                                                        <th class="numeric" >Size</th>
+                                                        <th class="numeric" >Unit</th>
+                                                        <th class="numeric" >Color</th>
+                                                        <th class="numeric" >Quantity</th>
+                                                        <th class="numeric" >Purchase price</th>
+                                                        <th class="numeric" >Sales price</th>
+                                                        <th class="numeric" >Discount price</th>
+                                                        <th class="numeric" >Status</th>
+                                                        <th class="numeric" >Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="loadSubItem">
+                                                    {% for subItem in entity.itemSubs  %}
+                                                        <tr id="removeProduct-{{ subItem.id }}">
+                                                            <td class="numeric" >{{ loop.index }}</td>
+                                                            <td class="numeric" >
+                                                                {% if  subItem.masterItem == 0 %}
+                                                                    <a  data-type="select" class="editable" id="size" data-name="Size" href="#" data-source="{{ path('ecommerce_item_inline_size') }}"  data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ entity.id }}" data-value="{% if subItem.size is defined and subItem.size is not empty %}{{ subItem.size.id }}{% endif %}" data-original-title="Enter Size name">{% if subItem.size is defined and subItem.size is not empty %}{{ subItem.size.name }}{% endif %}</a>
+                                                                {% else %}
+                                                                    {% if subItem.size is not empty %}
+                                                                        {{ subItem.size.name }}
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="numeric" >
+                                                                {% if  subItem.masterItem == 0 %}
+                                                                    <a  data-type="select" class="editable" id="productUnit" data-name="ProductUnit" href="#" data-source="{{ path('ecommerce_item_inline_unit') }}"  data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ entity.id }}" data-value="{% if subItem.productUnit is defined and subItem.productUnit is not empty %}{{ subItem.productUnit.id }}{% endif %}" data-original-title="Enter Unit name">{% if subItem.productUnit is defined and subItem.productUnit is not empty %}{{ subItem.productUnit.name }}{% endif %}</a>
+                                                                {% else %}
+                                                                    {% if subItem.productUnit is not empty %}
+                                                                        {{ subItem.productUnit.name }}
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="numeric" >{% if subItem.colors is not empty %}{% for color in subItem.colors %}{{ color.name }} {% if not loop.last %},{% endif %}{% endfor %}{% endif %}</td>
+                                                            <td class="numeric" >
+                                                                {% if  subItem.masterItem == 0 %}
+                                                                <a  data-type="text" class="editable" id="{{ subItem.id }}" data-name="quantity" href="#"   data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ subItem.id }}" data-value="{{ subItem.quantity }}" data-original-title="Enter change quantity">{{ subItem.quantity }}</a></td>
+                                                            {% else %}
+                                                                {{ subItem.quantity }}
+                                                            {% endif %}
+                                                            <td class="numeric" >{{ subItem.purchasePrice|number_format() }}</td>
+                                                            <td class="numeric" >
+                                                                {% if  subItem.masterItem == 0 %}
+                                                                    <a  data-type="text" class="editable" id="{{ subItem.id }}" data-name="SalesPrice" href="#"   data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ subItem.id }}" data-value="{{ subItem.salesPrice }}" data-original-title="Enter sales price">{{ subItem.salesPrice }}</a>
+                                                                {% else %}
+                                                                    {{ subItem.salesPrice }}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="numeric" >{{ subItem.discountPrice }}</td>
+                                                            <td class="numeric" >
+                                                                {% if  subItem.masterItem == 0 %}
+                                                                <input type="checkbox" data-url="{{ path('ecommerce_subitem_status',{'id':subItem.id}) }}" name="status" class="isApplicable" {% if subItem.status == 1 %} checked="checked" {% endif %} value="{{ subItem.status }}">
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                {% if  subItem.masterItem == 0 %}
+                                                                    <a class="btn red removeProduct mini" data-id="{{ subItem.id }}" data-url="{{ path('ecommerce_item_subItem_delete',{'id':subItem.id}) }}"><i class="icon-trash"></i> Delete</a>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(pagination) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .fileupload-preview {
+            max-width: 400px;
+            max-height: 40px;
+            line-height: 20px;
+        }
+    </style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/editable.js'
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+{% endblock %}
+

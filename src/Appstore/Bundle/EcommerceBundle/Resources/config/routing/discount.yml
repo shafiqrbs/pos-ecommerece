@@ -1,0 +1,26 @@
+ecommerce_discount:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Discount:index" }
+
+ecommerce_discount_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:Discount:create" }
+    methods:  POST
+
+ecommerce_discount_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Discount:update" }
+    methods:  [GET, PUT]
+
+ecommerce_discount_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Discount:edit" }
+
+ecommerce_discount_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:Discount:delete" }
+
+ecommerce_discount_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:Discount:status" }
+

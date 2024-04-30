@@ -1,0 +1,173 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN inventory_damage HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="inventory_damage-title">
+                    Manage Coupon
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('ecommerce_coupon') }}">Manage Coupon</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Coupon</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END inventory_damage HEADER-->
+        <!-- BEGIN inventory_damage CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Coupon</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('ecommerce_coupon') }}"><i class="icon-th-list"></i>&nbsp; Coupon</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+
+
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="row-fluid">
+                                        <div class="span12 ">
+                                            <div class="control-group">
+                                                <label class="control-label" for="price">Name</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.name) }}
+                                                    {{ form_errors(form.name) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <div class="row-fluid">
+                                        <div class="span12 ">
+                                            <label class="control-label" for="price">Coupon Code</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.couponCode) }}
+                                                {{ form_errors(form.couponCode) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="span4">
+                                    <div class="row-fluid">
+
+                                        <div class="span6">
+                                            <label class="control-label" for="price">Discount Amount</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.amount) }}
+                                                {{ form_errors(form.amount) }}
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <label class="control-label" for="price">&nbsp;</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.discountCalculation) }}
+                                                {{ form_errors(form.discountCalculation) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12 ">
+                                            <label class="control-label" for="price">Order Valid Amount</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.validAmount) }}
+                                                {{ form_errors(form.validAmount) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12 ">
+                                            <label class="control-label" for="price">Maximum Discount Amount</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.amountLimit) }}
+                                                {{ form_errors(form.amountLimit) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12 ">
+                                            <div class="control-group">
+                                                <label class="control-label" for="notes">Coupon Quantity</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.quantity) }}
+                                                    {{ form_errors(form.quantity) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12 ">
+                                            <div class="control-group">
+                                                <label class="control-label" for="notes">Coupon Validity</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.startDate) }}
+                                                    {{ form_errors(form.startDate) }}
+                                                    {{ form_widget(form.endDate) }}
+                                                    {{ form_errors(form.endDate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                    <button type="reset" class="btn purple"><i class="icon-refresh"></i> Reset</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    ApproveProcess();
+{% endblock %}
+

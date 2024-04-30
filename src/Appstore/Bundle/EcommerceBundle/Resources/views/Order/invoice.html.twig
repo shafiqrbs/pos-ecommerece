@@ -1,0 +1,141 @@
+{% extends '::print.html.twig' %}
+{% block body %}
+    {% if globalOption.ecommerceConfig.isPrintHeader == 1 %}
+    <table class="table">
+        <tr>
+            <td>
+                <div class="span4  pull-left invoice-logo-space">
+                    {% if entity.globalOption.templateCustomize.webPath('logo') is not empty %}   <img style="max-width: 180px; max-height: 60px" src="http://{{ app.request.host }}/{{ entity.globalOption.templateCustomize.webPath('logo') }}">{% endif %}
+                </div>
+            </td>
+            <td class="span3">
+               {{ entity.ecommerceConfig.address|raw }}
+            </td>
+        </tr>
+    </table>
+{% endif %}
+    <table class="table table-border" >
+        <tr class="print-header">
+            <td class="span3">
+                <ul class="unstyled" style="margin-top: 6px!important; font-size: 14px">
+                    <li><strong>Invoice</strong>: {{ entity.invoice }}</li>
+                    <li style="font-size: 12px">Order Date: {{ entity.created|date('D, j M Y') }}</li>
+                </ul>
+            </td>
+            <td class="pull-right"> <span class="barcode">{{ barcode|raw }}</span></td>
+        </tr>
+    </table>
+    <table class="table table-margin">
+        <td class="span3 pull-left">
+
+            <ul class="unstyled" >
+                <li> <label><strong>{{ entity.delivery|capitalize }} Address</strong></label></li>
+                <li><strong>Name</strong>:&nbsp;{{ entity.customerName }}</li>
+                <li><strong>Mobile</strong>:&nbsp;{{ entity.customerMobile }}</li>
+                <li>{{ entity.address }}</li>
+            </ul>
+        </td>
+        <td class="span3">
+            <ul class="unstyled pull-right">
+                <li><label><strong>Payment & Shipping</strong></label></li>
+                {% if entity.cashOnDelivery == 1 %}
+                    <li><strong>Payment Method</strong>:&nbsp;Cash On Delivery</li>
+                {% endif %}
+                <li><strong>Shipping</strong>:&nbsp;{{ entity.delivery|capitalize }}</li>
+                <li><strong>Delivery Date</strong>:&nbsp;{{ entity.deliveryDate|date('D, j M Y') }}</li>
+                <li><strong>Delivery Slot</strong>:&nbsp;{{ entity.deliverySlot|capitalize }}</li>
+                <li><strong>Process</strong>:&nbsp;{{ entity.process|capitalize }}</li>
+            </ul>
+        </td>
+
+    </table>
+    {% if entity.orderItems is defined and  entity.orderItems is not empty  %}
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr class="head-black" style="background:#c2ccd1">
+                <th class="" ><i class="icon-reorder"></i></th>
+                <th class="" >Item</th>
+                <th class="" >Quantity</th>
+                <th class="" >Unit</th>
+                <th class="" >Price</th>
+                <th class="" >Sub-Total</th>
+            </thead>
+            <tbody>
+            {% for item in entity.orderItems %}
+                <tr id="remove-{{ item.id }}">
+                    <td class="" >{{ loop.index }}</td>
+                    <td class="" >{{ item.itemName }}</td>
+                    <td class="" >{{ item.quantity }}</td>
+                    <td class="" >{{ item.unitName }}</td>
+                    <td class="" >{{ item.price }}</td>
+                    <td class="" >{{ item.subTotal }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td class="numeric" colspan="5" ><span class="pull-right">Total</span></td>
+                <td class="numeric" colspan="1" >=&nbsp;{{ entity.totalAmount|number_format }}</td>
+            </tr>
+            <tr>
+                <td class="numeric" colspan="5" ><span class="pull-right">Delivery Charge</span></td>
+                <td class="numeric">=&nbsp;{{ entity.shippingCharge }}</td>
+            </tr>
+
+            {% if entity.ecommerceConfig.vatEnable == 1 %}
+                <tr>
+                    <td class="numeric" colspan="5" ><span class="pull-right">Vat & Tax</span></td>
+                    <td class="numeric">=&nbsp;{{ entity.vat }}</td>
+                </tr>
+            {% endif %}
+            {% if entity.discountAmount > 0 %}
+                <tr>
+                    <td class="numeric" colspan="5" ><span class="pull-right">Discount Amount</span></td>
+                    <td class="numeric">=&nbsp;{{ ( entity.discountAmount)|number_format }}</td>
+                </tr>
+            {% endif %}
+            {% if entity.coupon is not empty %}
+                <tr>
+                    <td class="numeric" colspan="5" ><span class="pull-right">Coupon Code({{ entity.coupon.couponCode }})</span></td>
+                    <td class="numeric">=&nbsp;{{ entity.couponAmount }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td class="numeric" colspan="5" ><span class="pull-right">Grand Total</span></td>
+                <td class="numeric"><strong>=&nbsp;{{ ( entity.grandTotalAmount)|number_format }}</strong></td>
+            </tr>
+            <tr>
+                <td class="numeric" colspan="5" ><span class="pull-right">Paid Amount</span></td>
+                <td class="numeric"><strong>=&nbsp;{{ ( entity.paidAmount)|number_format }}</strong></td>
+            </tr>
+            {% if entity.dueAmount  > 0 %}
+                <tr>
+                    <td class="numeric" colspan="5" ><span class="pull-right">Due Amount</span></td>
+                    <td class="numeric" >=&nbsp;{{ ( entity.dueAmount)|number_format }}</td>
+                </tr>
+            {% endif %}
+            {% if entity.returnAmount  > 0 %}
+                <tr>
+                    <td class="numeric" colspan="5" ><span class="pull-right">Return Amount</span></td>
+                    <td class="numeric">=&nbsp;{{ ( entity.returnAmount)|number_format }}</td>
+                </tr>
+            {% endif %}
+            <tr><td colspan="7" style="text-align:right"><strong>In word TK.</strong>({{ amountInWords|raw }} only).</td></tr>
+            </tfoot>
+        </table>
+    {% endif %}
+    <table class="table">
+        {% if globalOption.ecommerceConfig.printBy == 1 %}
+            <tr><td colspan="7" style="text-align:right!important;">Printed By. {{ app.user.profile.name }}</td></tr>
+        {% endif %}
+        {% if globalOption.ecommerceConfig.isPrintFooter == 1 %}
+            <tr><td colspan="7" style="text-align:center!important; font-weight:bold">{{ portal_power }}</td></tr>
+        {% endif %}
+    </table>
+<style>
+.table thead tr th{
+    text-align: left!important;
+}
+</style>
+{% endblock %}
+

@@ -1,0 +1,34 @@
+ecommerce_location:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:index" }
+
+ecommerce_location_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:show" }
+
+ecommerce_location_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:new" }
+
+ecommerce_location_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:create" }
+    methods:  POST
+
+ecommerce_location_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:edit" }
+
+ecommerce_location_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:status" }
+
+ecommerce_location_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:update" }
+    methods:  [POST, PUT]
+
+ecommerce_location_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:DeliveryLocation:delete" }
+

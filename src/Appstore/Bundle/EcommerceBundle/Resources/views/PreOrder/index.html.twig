@@ -1,0 +1,268 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Pre-order
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('customer_preorder') }}">Manage Pre-order</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Pre-order Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Pre-order Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="icon-cogs"></i>&nbsp;Tools
+                                    <i class="icon-tasks"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="{{ path('customer_preorder') }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Invoice</th>
+                                    <th class="numeric" >item</th>
+                                    <th class="numeric" >Quantity</th>
+                                    <th class="numeric" >Convert Sub Total</th>
+                                    <th class="numeric" >Shipping&Tax</th>
+                                    <th class="numeric" >Vat</th>
+                                    <th class="numeric" >Discount</th>
+                                    <th class="numeric" >Delivery Charge</th>
+                                    <th class="numeric" >Grand Total</th>
+                                    <th class="numeric" >Pre-paid</th>
+                                    <th class="numeric" >Status</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr id="remove-tr-{{ entity.id }}">
+                                        <td><span class="badge badge-warning toggle badge-custom" id="{{ entity.id  }}" ><span>[+]</span></span></td>
+                                        <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.invoice }}</td>
+                                        <td class="numeric" >{{ entity.item }}</td>
+                                        <td class="numeric" >{{ entity.quantity }}</td>
+                                        <td class="numeric" >{{ entity.totalAmount|number_format }}</td>
+                                        <td class="numeric" >{{ entity.totalShippingCharge }}</td>
+                                        <td class="numeric" >{{ entity.vat }}</td>
+                                        <td class="numeric" >{{ entity.deliveryCharge }}</td>
+                                        <td class="numeric" >{{ entity.discountAmount }}</td>
+                                        <td class="numeric" >{{ entity.grandTotalAmount|number_format }}</td>
+                                        <td class="numeric" >{{ entity.prePaidAmount|number_format }}</td>
+                                        <td class="numeric" ><span class="btn blue mini">{{ entity.process|capitalize }}</span></td>
+                                        <td class="numeric" >
+                                            <a href="{{ path('customer_preorder_item', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-money"></i>&nbsp;Payment</a>
+                                            <a href="{{ path('customer_preorder_show', {'id': entity.id }) }}" class="btn green mini" ><i class="icon-eye-open"></i>&nbsp;View</a>
+                                        </td>
+                                    </tr>
+                                    <tr id="show-{{ entity.id }}" class="showing-overview" >
+                                        <td colspan="15">
+                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                <thead class="flip-content ">
+                                                <tr class="head-green">
+                                                    <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                                    <th class="numeric" >Name</th>
+                                                    <th class="numeric" >Quantity</th>
+                                                    <th class="numeric" >Currency</th>
+                                                    <th class="numeric" >Unit Price</th>
+                                                    <th class="numeric" >Sub-Total</th>
+                                                    <th class="numeric" >Convert Rate (BDT)</th>
+                                                    <th class="numeric" >Convert Sub-Total</th>
+                                                    <th class="numeric" >Tax&Shipping</th>
+                                                    <th class="numeric" >Convert Total</th>
+                                                    <th class="numeric" >Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for item in entity.preOrderItems %}
+                                                    <tr id="remove-{{ item.id }}">
+                                                        <td>
+                                                            {% if item.details %}
+                                                                <span class="badge badge-warning toggle badge-custom" id="{{ item.id  }}" ><span>[+]</span></span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="numeric" ><a target="_blank" href="{{ item.url }}"> {{ item.name|truncate(50) }}</a></td>
+                                                        <td class="numeric" >
+                                                            {{ item.quantity }}</td>
+                                                        <td class="numeric" >{{ item.currencyType|capitalize }}</td>
+                                                        <td class="numeric" >{{ item.unitPrice }}</td>
+                                                        <td class="numeric" >={{ item.subTotal|number_format }}</td>
+                                                        <td class="numeric" style="width:80px!important;">
+                                                            {% if item.status == 0 %}
+                                                            <input type="text" class="span12 price td-input" rel="{{ item.id }}"  name="convertRate[]" id="convertRate-{{ item.id }}"  value="{{ item.convertRate is not empty ? item.convertRate : 1 }}"></td>
+                                                        {% else %}
+                                                            {{ item.convertRate is not empty ? item.convertRate : 1 }}
+                                                        {% endif %}
+                                                        <td class="numeric" id="convertSubTotal-{{ item.id }}" >={{ item.convertSubTotal|number_format }}</td>
+                                                        <td class="numeric" style="width:80px!important;">
+                                                            {% if item.status == 0 %}
+                                                                <input type="text" class="span12 shippingCharge td-input"  rel="{{ item.id }}" name="shippingCharge[]" id="shippingCharge-{{ item.id }}"  value="{{ item.shippingCharge }}">
+                                                                <input type="hidden" name="item[]" id="item-{{ item.id }}" value="{{ item.id }}" >
+                                                                <input type="hidden" name="quantity[]" id="quantity-{{ item.id }}" value="{{ item.quantity }}">
+                                                            {% else %}
+                                                                {{ item.shippingCharge }}
+                                                            {% endif %}
+                                                        </td>
+                                                        <td class="numeric" >={{ item.convertTotal|number_format }}</td>
+                                                        <td class="numeric" >
+                                                            {% if item.status == 1 %}
+                                                                <a class="btn  mini green" ><i class=" icon-thumbs-up"></i> Accept</a>
+                                                            {% elseif item.status == 2 %}
+                                                                <a class="btn  mini red " ><i class="icon-thumbs-down"></i> Deny</a>
+                                                            {% endif %}
+                                                            {% if item.status == 0 and entity.process == 'wfc' and entity.checkRoleEcommercePreorder(app.user.role) == true  %}
+                                                                <div class="btn-group">
+                                                                    <button class="blue btn mini dropdown-toggle" data-toggle="dropdown">
+                                                                        <i class="icon-refresh"></i>  Action&nbsp; <i class="icon-tasks"></i>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu pull-right action">
+                                                                        <li><a data-title="Confirm item" data-id="{{ item.id }}" data-url="{{ path('customer_preorder_item_confirm',{'preOrder':entity.id,'id':item.id,'status':1}) }}" class="btn green itemProcess tooltips" data-trigger = "hover" data-original-title ="Are you sure went to delivery this item ?"><i class="icon-ok-circle"></i> Accept</a></li>
+                                                                        <li><a data-title="Deny item" data-id="{{ item.id }}" data-url="{{ path('customer_preorder_item_confirm',{'preOrder':entity.id,'id':item.id,'status':2}) }}" class="btn red itemProcess tooltips" data-trigger = "hover" data-original-title ="Are you sure went to reject this item ?"><i class="icon-trash"></i> Deny</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr id="show-{{ item.id }}" class="showing-overview">
+                                                        <td colspan="11">{{ item.details }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                            </table>
+                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                <thead class="flip-content ">
+                                                <tr class="head-green">
+                                                    <th class="numeric" >Date</th>
+                                                    <th class="numeric" >Transaction Type</th>
+                                                    <th class="numeric" >Payment Mobile</th>
+                                                    <th class="numeric" >Transaction ID</th>
+                                                    <th class="numeric" >Receive Mobile</th>
+                                                    <th class="numeric" >Receive Amount</th>
+                                                    <th class="numeric" >Return Amount</th>
+                                                    <th class="numeric" >Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for payment in entity.preOrderPayments %}
+                                                    <tr id="remove-{{ payment.id }}">
+                                                        <td>{{ payment.updated|date('d-m-Y') }}</td>
+                                                        <td class="numeric" >{{ payment.transactionType }}</td>
+                                                        <td class="numeric" >{{ payment.mobileAccount }}</td>
+                                                        <td class="numeric" >{{ payment.transaction }}</td>
+                                                        <td class="numeric" >{{ payment.accountMobileBank.name }}</td>
+                                                        <td class="numeric" >{% if payment.transactionType =='Payment' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                                        <td class="numeric" >{% if payment.transactionType =='Return' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                                        <td class="numeric" >
+                                                            {% if payment.status == 1  %}
+                                                            <a class="btn  mini green" data-url="" ><i class=" icon-thumbs-up"></i> Accept</a></td>
+                                                        {% elseif payment.status == 2 %}
+                                                            <a class="btn  mini red" data-url="" ><i class=" icon-thumbs-down"></i> Deny</a></td>
+                                                        {% endif %}
+                                                        {% if payment.status == 0 and entity.process == 'wfc' and entity.checkRoleEcommercePreorder(app.user.role) == true  %}
+                                                            <div class="btn-group">
+                                                                <button class="blue btn mini dropdown-toggle" data-toggle="dropdown">
+                                                                    <i class="icon-refresh"></i>  Action&nbsp; <i class="icon-tasks"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu pull-right action">
+                                                                    <li><a data-title="Confirm item" data-id="{{ payment.id }}" data-url="{{ path('customer_preorder_payment_confirm',{'id':payment.id,'process':1}) }}" class="btn green itemProcess tooltips" data-trigger = "hover" data-original-title ="Are you sure went to delivery this item ?"><i class="icon-ok-circle"></i> Accept</a></li>
+                                                                    <li><a data-title="Deny item" data-id="{{ payment.id }}" data-url="{{ path('customer_preorder_payment_confirm',{'id':payment.id,'process':2}) }}" class="btn red itemProcess tooltips" data-trigger = "hover" data-original-title ="Are you sure went to reject this item ?"><i class="icon-trash"></i> Deny</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
+
+                                                <tr>
+                                                    <td colspan="8"><br/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Grand Total </strong></span></td>
+                                                    <td class="numeric" >=&nbsp;{{ entity.grandTotalAmount|number_format }}</td>
+                                                    <td class="numeric" ></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Total Receive</strong></span></td>
+                                                    <td class="numeric" >=&nbsp;{{ entity.paidAmount|number_format }}</td>
+                                                    <td class="numeric" ></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Due Amount</strong></span></td>
+                                                    <td class="numeric" >=&nbsp;{{ entity.dueAmount|number_format }}</td>
+                                                    <td class="numeric" ></td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/editable.js'
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    $(".editable").editable();
+    ApproveProcess();
+
+{% endblock %}
+
+

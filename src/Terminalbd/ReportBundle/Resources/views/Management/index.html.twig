@@ -1,0 +1,141 @@
+{% extends '::base-management-report.html.twig' %}
+{% block body %}
+    <div id="print-area">
+
+        <div class="row print-header">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <p><strong>{{ option.name }}</strong></p>
+                <p><strong>Name of Report: Employee Overview</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-purple">
+                        <th class="span-9">Gender Mode</th>
+                        <th class="text-right span-1">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set totalCustomer = 0 %}
+                    {% if data.genders is not empty %}
+                    {% for row in data.genders %}
+                        {% set totalCustomer = totalCustomer + row.counts %}
+                        <tr>
+                            <td class="text-left" >{{ row.name }}</td>
+                            <td class="text-right" >{{ row.counts|number_format }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endif %}
+                    <tr>
+                        <td class="text-left" >Total</td>
+                        <td class="text-right" >{{ totalCustomer|number_format }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-purple">
+                        <th class="span-9">Category Mode</th>
+                        <th class="text-right span-1">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% if data.categorys is not empty %}
+                        {% for row in data.categorys %}
+                            <tr>
+                                <td class="text-left" >{{ row.name }}</td>
+                                <td class="text-right" >{{ row.counts|number_format }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-purple">
+                        <th class="span-9">Units Mode</th>
+                        <th class="text-right span-1">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if data.units is not empty %}
+                        {% for row in data.units %}
+                            <tr>
+                                <td class="text-left" >{{ row.name }}</td>
+                                <td class="text-right" >{{ row.counts|number_format }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-purple">
+                        <th class="span-9">Department Mode</th>
+                        <th class="text-right span-1">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if data.departments is not empty %}
+                        {% for row in data.departments %}
+                            <tr>
+                                <td class="text-left" >{{ row.name }}</td>
+                                <td class="text-right" >{{ row.counts|number_format }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-purple">
+                        <th class="span-9">Section Mode</th>
+                        <th class="text-right span-1">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if data.sections is not empty %}
+                        {% for row in data.sections %}
+                            <tr>
+                                <td class="text-left" >{{ row.name }}</td>
+                                <td class="text-right" >{{ row.counts|number_format }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-purple">
+                        <th class="span-9">Designation Mode</th>
+                        <th class="text-right span-1">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% if data.professions is not empty %}
+                        {% for row in data.professions %}
+                            <tr>
+                                <td class="text-left" >{{ row.name }}</td>
+                                <td class="text-right" >{{ row.counts|number_format }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

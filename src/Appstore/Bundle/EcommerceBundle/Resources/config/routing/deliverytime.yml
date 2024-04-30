@@ -1,0 +1,34 @@
+ecommerce_delivertime:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:TimePeriod:index" }
+
+ecommerce_delivertime_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:TimePeriod:show" }
+
+ecommerce_delivertime_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:TimePeriod:new" }
+
+ecommerce_delivertime_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:TimePeriod:create" }
+    methods:  POST
+
+ecommerce_delivertime_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:TimePeriod:edit" }
+
+ecommerce_delivertime_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:TimePeriod:status" }
+
+ecommerce_delivertime_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:TimePeriod:update" }
+    methods:  [POST, PUT]
+
+ecommerce_delivertime_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:TimePeriod:delete" }
+

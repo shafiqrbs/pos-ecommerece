@@ -1,0 +1,169 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Order
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('customer_order') }}">Manage Order</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Order Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Order Information</div>
+
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="customer" name="customer" class="span12 m-wrap select2Customer" value="{% if searchForm.customer is defined %}{{ searchForm.customer }}{% endif %}" autocomplete="off" placeholder="Enter customer">
+
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="startDate" name="startDate" class="span12 m-wrap" value="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% endif %}" autocomplete="off" placeholder="Enter start date">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="endDate" name="endDate" class="span12 m-wrap" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}"  autocomplete="off" placeholder="Enter brand name">
+                                        </div>
+                                        <div class="span3">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <input type="text" id="invoice" name="invoice" class="span11 m-wrap" value="{% if searchForm.invoice is defined %}{{ searchForm.invoice }}{% endif %}" autocomplete="off" placeholder="Enter invoice no ">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Delivery</th>
+                                    <th class="numeric" >Invoice</th>
+                                    <th class="numeric" >Quantity</th>
+                                    <th class="numeric" >Total</th>
+                                    <th class="numeric" >Payment</th>
+                                    <th class="numeric" >Due/Return</th>
+                                    <th class="numeric" >Process</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr id="remove-tr-{{ entity.id }}">
+                                        <td><span class="badge badge-warning toggle badge-custom" id="{{ entity.id  }}" ><span>[+]</span></span></td>
+                                        <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.deliveryDate|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.invoice }}</td>
+                                        <td class="numeric" >{{ entity.item }}</td>
+                                        <td class="numeric" >{{ entity.grandTotalAmount }}</td>
+                                        <td class="numeric" >{{ entity.paidAmount }}</td>
+                                        <td class="numeric" >{% if entity.grandTotalAmount > entity.paidAmount %}-{{ entity.dueAmount }}{% else %}+{{ entity.returnAmount }}{% endif %}</td>
+                                        <td class="" ><span class="btn blue mini">{{ entity.process|capitalize }}</span></td>
+                                        <td class="numeric" >
+                                            {% set preCondition = {'wfc': 'wfc' ,'confirm':'confirm'} %}
+                                            {% set postCondition = {'delivered': 'delivered' ,'confirm':'confirm'} %}
+                                            {% if entity.process == 'created' %}
+                                                <a href="{{ path('order_payment', {'shop':entity.globalOption.slug, 'id': entity.id }) }}" class="btn green mini " ><i class="icon-money"></i></a>
+                                                <a data-id="{{ entity.id }}" data-url="{{ path('order_delete', {'shop':entity.globalOption.slug, 'id': entity.id }) }}" class="btn red mini remove" ><i class="icon-trash"></i></a>
+                                            {% elseif entity.process in  preCondition|keys %}
+                                                <a href="{{ path('order_payment', {'shop':entity.globalOption.slug,'id': entity.id }) }}" class="btn green mini" ><i class="icon-money"></i></a>
+                                             {% endif %}
+                                            <a href="{{ path('order_show', { 'shop':entity.globalOption.slug,'id': entity.id }) }}" class="btn blue mini" ><i class="icon-eye-open"></i></a>
+                                            <a href="{{ path('order_print_invoice', {'shop':entity.globalOption.slug, 'invoice': entity.invoice }) }} " target="_blank" class="btn purple mini" ><i class="icon-print"></i></a>
+
+                                        </td>
+                                    </tr>
+                                    <tr id="show-{{ entity.id }}" class="showing-overview" >
+                                        <td colspan="11">
+                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                <thead class="flip-content ">
+                                                <tr class="head-blue">
+                                                    <th class="numeric" >Item</th>
+                                                    <th class="numeric" >Size/Weight/Dimension</th>
+                                                    <th class="numeric" >Color</th>
+                                                    <th class="numeric" >Quantity</th>
+                                                    <th class="numeric" >Unit Price</th>
+                                                    <th class="numeric" >Total Price</th>
+                                                    <th class="numeric" >Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for item in entity.orderItems %}
+                                                    <tr id="remove-{{ item.id }}">
+                                                        <td class="numeric" >{{ item.purchaseVendorItem.masterItem.name }} {{ item.purchaseVendorItem.webName }}</td>
+                                                        <td class="numeric" >{% if item.goodsItem.size is not empty %}{{ item.goodsItem.size.name }}{% endif %}</td>
+                                                        <td class="numeric" >{% if item.color is not empty %}{{ item.color.name }}{% endif %}</td>
+                                                        <td class="numeric" >{{ item.quantity }}&nbsp;{% if item.purchaseVendorItem.masterItem.productUnit is defined and item.purchaseVendorItem.masterItem.productUnit is not empty %}{{ item.purchaseVendorItem.masterItem.productUnit.name }}{% endif %}</td>
+                                                        <td class="numeric" >{{ item.price }}</td>
+                                                        <td class="numeric" >{{ item.subTotal }}</td>
+                                                    </tr>
+
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    ApproveProcess();
+{% endblock %}
+

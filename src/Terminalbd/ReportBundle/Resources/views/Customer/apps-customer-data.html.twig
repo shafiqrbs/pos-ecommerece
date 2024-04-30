@@ -1,0 +1,51 @@
+<style>
+    .grid-item-custom{
+        min-height: 80px;
+        padding-left: 15px;
+    }
+    .grid-item-custom .label-title{
+        font-size: 18px;
+        color: #000033;
+    }
+    .grid-item-custom .label-value{
+        font-size: 16px;
+        color:#f0360a;
+        font-weight: bold;
+    }
+</style>
+<table class="table even" border="1" id="downloadExcel">
+    <tr>
+        <th>Date</th>
+        <th>Employee ID</th>
+        <th class="numeric">Name</th>
+        <th class="numeric">Gender</th>
+        <th class="numeric">Mobile</th>
+        <th class="numeric">Designation</th>
+        <th class="numeric">Department</th>
+        <th class="numeric">Line</th>
+        <th class="numeric">Section</th>
+        <th class="numeric">Unit</th>
+        <th class="numeric">Category</th>
+        <th class="numeric">Credit Limit</th>
+    </tr>
+    {% if entities is not empty %}
+    {% for entity in entities %}
+    <tr>
+        <td>
+            {{ entity.created ? entity.created|date('d-m-Y h:i A') : '' }}
+        </td>
+        <td>{{ entity.employeeId }}</td>
+        <td>{{ entity.name }}</td>
+        <td>{{ entity.gender }}</td>
+        <td>{{ entity.mobile }}</td>
+        <td>{{ entity.profession }}</td>
+        <td>{{ entity.department }}</td>
+        <td>{{ entity.line }}</td>
+        <td>{{ entity.section }}</td>
+        <td>{{ entity.unit }}</td>
+        <td>{{ entity.category }}</td>
+        <td>{{ entity.creditLimit|number_format(2) }}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>

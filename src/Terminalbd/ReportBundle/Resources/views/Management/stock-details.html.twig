@@ -1,0 +1,62 @@
+{% extends '::base-management-report.html.twig' %}
+{% block body %}
+    <div id="print-area">
+        <div class="row print-header">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <p><strong>{{ option.name }}</strong></p>
+                <p><strong>Name of Report: Stock Overview</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead>
+                    <tr class="head-green">
+                        {%  set sort = app.request.query.get('sort') %}
+                        {%  set direction = app.request.query.get('direction') %}
+                        <th class="numeric" >Barcode</th>
+                        <th {% if entities.isSorted('item.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Name', 'item.name') }}{% if( direction == 'desc' and sort == 'item.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                        <th {% if entities.isSorted('item.nameBn') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Name BN', 'item.nameBn') }}{% if( direction == 'desc' and sort == 'item.nameBn') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                        {#    <th {% if entities.isSorted('item.sku') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'SKU', 'item.sku') }}{% if( direction == 'desc' and sort == 'item.sku') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>#}
+                        <th class="numeric" >Category</th>
+                        <th class="numeric" >Brand</th>
+                        <th class="numeric" >P.Qnt</th>
+                        <th class="numeric" >Rmn.Qnt</th>
+                        <th class="numeric" >Min.Qnt</th>
+                        <th class="numeric" >Unit</th>
+                        <th class="numeric" >Avg P.Price</th>
+                        <th class="numeric" >Avg S.Price</th>
+                        <th class="numeric" >Sales Price</th>
+                    </tr>
+                    </thead>
+                    <tbody class="flip-content ">
+
+                    {% for entity in entities %}
+                        <tr {% if entity.minQnt >= entity.remainingQnt   %} class="min-qnt" aria-disabled="true" {% endif %}>
+                            <td class="" >{{ entity.barcode }}</td>
+                            <td class="" >{{ entity.name }}</td>
+                            <td class="" >{{ entity.nameBn }}</td>
+                            <td class="numeric" >{% if entity.category %}{{ entity.category.name }}{% endif %}</td>
+                            <td class="numeric" >{% if entity.brand %}{{ entity.brand.name }}{% endif %}</td>
+                            <td class="" >{{ entity.purchaseQuantity }}</td>
+                            <td class="" >{{ entity.remainingQnt }}</td>
+                            <td class="" ><a class="editableText" data-name="MinQnt" href="#"  data-url="{{ path('inventory_item_web_price') }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Add product min quantity">{{ entity.minQnt }}</a></td>
+                            <td class="" >{% if entity.masterItem.productUnit is not empty %}{{  entity.masterItem.productUnit.name }}{% endif %}</td>
+                            <td class="" >{{ entity.avgPurchasePrice }}</td>
+                            <td class="" >{{ entity.avgSalesPrice }}</td>
+                            <td class="" ><a class="editableText" data-name="SalesPrice" href="#"  data-url="{{ path('inventory_item_web_price') }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Add product sales price">{{ entity.salesPrice }}</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pagination pull-center"  >
+            {{ knp_pagination_render(entities) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+

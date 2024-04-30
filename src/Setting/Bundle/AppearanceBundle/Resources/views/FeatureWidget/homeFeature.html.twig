@@ -1,0 +1,202 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    E-commerce  Home Customize
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('ecommercehome') }}"> E-commerce  Page Customize</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i> E-commerce Page Customize</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('ecommercehome_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a>
+                                <a class="btn" href="{{ path('ecommercehome') }}"><i class="icon-th-list"></i>&nbsp;Page Customize</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll dd" id="nestable_list_2">
+                            {% include('flash-message.html.twig')  %}
+                            {#<form id="sorting" action="" method="post">
+                                <ul class="sortable grid dd-list" style="width:100%">
+                                    {% for entity in entities %}
+                                        {% if(entity.webPath) %}
+                                            <li style="overflow: hidden;height: {{ entity.divHeight }}px; width: {{ entity.divWidth }}px" data-id="{{ entity.id }}" id="item_{{ entity.id }}" class="ui-widget-content dd-item dd3-item">
+                                                <span data-id="{{ entity.id }}" class="dd-handle dd3-handle"></span>
+                                                <img class="" alt="" src="/{{ entity.webPath }}">
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                <div class="form-actions portlet box grey">
+                                    <div class="pull-center">
+                                        <button type="button" class="btn green" id="serialize" ><i class="icon-ok"></i> Save</button>
+                                        <button type="button" class="btn purple"><i class="icon-refresh"></i> Reset</button>
+                                    </div>
+                                </div>
+                            </form>#}
+                            <form id="sorting" action="" method="post">
+                                <ul class="sortable grid dd-list" style="width:100%">
+                                    {% for entity in entities %}
+                                        {% if(entity.webPath) %}
+                                            <li style="overflow: hidden;height: {{ entity.divHeight }}px; width: {{ entity.divWidth }}px" data-id="{{ entity.id }}" id="item_{{ entity.id }}" class="ui-widget-content dd-item dd3-item">
+                                                <span data-id="{{ entity.id }}" class="dd-handle dd3-handle"></span>
+                                                <div>
+                                                    Build responsive, mobile-first projects on the web with the world’s most popular front-end component library.
+
+                                                    Bootstrap is an open source toolkit for developing with HTML, CSS, and JS. Quickly prototype your ideas or build your entire app with our Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful plugins built on jQuery.
+                                                </div>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                                <div class="form-actions portlet box grey">
+                                    <div class="pull-center">
+                                        <button type="button" class="btn green" id="serialize" ><i class="icon-ok"></i> Save</button>
+                                        <button type="button" class="btn purple"><i class="icon-refresh"></i> Reset</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<style>
+
+    .connected, .sortable, .exclude, .handles {
+        margin: auto;
+        padding: 0;
+        width: 310px;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .sortable.grid {
+        overflow: hidden;
+    }
+    .connected li, .sortable li, .exclude li, .handles li {
+        list-style: none;
+        border: 1px solid #CCC;
+        background: #F6F6F6;
+        color: #1C94C4;
+        margin: 5px;
+        padding: 5px;
+        height: 22px;
+    }
+    .handles span {
+        cursor: move;
+    }
+    li.disabled {
+        opacity: 0.5;
+    }
+    .sortable.grid li {
+        line-height: 80px;
+        float: left;
+        width: 80px;
+        height: 80px;
+        text-align: center;
+    }
+    li.highlight {
+        background: #FEE25F;
+    }
+    #connected {
+        width: 440px;
+        overflow: hidden;
+        margin: auto;
+    }
+    .connected {
+        float: left;
+        width: 200px;
+    }
+    .connected.no2 {
+        float: right;
+    }
+    li.sortable-placeholder {
+        border: 1px dashed #CCC;
+        background: none;
+    }
+</style>
+
+{% endblock %}
+{% block documentready %}
+
+    {{ parent() }}
+
+    $(function() {
+        $('.sortable').sortable();
+        $('.handles').sortable({
+            handle: 'span'
+        });
+
+    });
+    $( function() {
+
+    $( ".grid li" ).resizable({
+        maxHeight: 500,
+        start : function(event,ui) {
+        startW = $(this).outerWidth();
+        startH = $(this).outerHeight();
+    },
+    stop : function(event,ui) {
+
+        endW = $(this).outerWidth();
+        endH = $(this).outerHeight();
+        id = $(this).attr('data-id');
+        $.ajax({
+        url: '{{ path('ecommercetemplate_resizing') }}',
+        type: "POST",
+        data: { id : id,height:endH,width:endW },
+        }).done(function(data){
+        });
+
+    }
+    });
+    });
+
+    $('#serialize').click(function(){
+
+        var serialized = $(".sortable").sortable("serialize");
+        $.ajax({
+            url: '{{ path('ecommercetemplate_sorted') }}',
+            type: "POST",
+            data: serialized
+        }).done(function(data){
+        });
+
+    })
+
+{% endblock %}

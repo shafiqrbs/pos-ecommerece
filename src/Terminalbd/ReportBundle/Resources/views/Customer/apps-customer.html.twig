@@ -1,0 +1,53 @@
+{% extends '::base-report.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-12 print-bar">
+            <form name="searchForm" id="searchForm" action="{{ path('report_management_active_customer_ajax') }}" method="post">
+                <div class="grid-container-4">
+                    <div class="grid-item">
+                        <label>Start Date</label><br/>
+                        <div class="col-md-6">
+                            <input type="date" class="m-wrap span6 datepicker m-wrap" required="required"  id="startDate" name="startDate" value="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% endif %}">
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <label>End Date</label><br/>
+                        <div class="col-md-6">
+                            <input type="date" class="m-wrap span6 datepicker m-wrap" required="required"  id="endDate" name="endDate" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}">
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <label>&nbsp;</label><br/>
+                        <div class="col-md-6">
+                            <button type="button" class='btn btn-download btn-margin-left ajax-btn' value="search" name="submit" ><i class='fa fa-search'></i> Search</button>
+                            <button class="btn purple" onclick="exportExcel()" type="button"><i class="fa fa-file"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="loader loader-double" ></div>
+    <div id="print-area">
+        <div class="row print-header">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <p><strong style="font-size:18px">{{ option.name }}</strong></p>
+                <p><strong>Name of Report: Monthly Active Apps Customer</strong></p>
+            </div>
+            <div class="col-md-4 text-right">Printed: {{ "now"|date('d-m-Y') }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="data-load"></div>
+        </div>
+    </div>
+    <script>
+        function exportExcel() {
+            var table = document.querySelector('#downloadExcel');
+            TableToExcel.convert(table);
+        }
+    </script>
+{% endblock %}
+
+
+

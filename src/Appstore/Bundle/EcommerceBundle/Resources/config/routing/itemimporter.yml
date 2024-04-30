@@ -1,0 +1,42 @@
+ecommerce_itemimporter:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:ItemImporter:index" }
+
+ecommerce_itemimporter_migration:
+    path:     /{id}/data-migration
+    defaults: { _controller: "EcommerceBundle:ItemImporter:excelDataImport" }
+
+ecommerce_itemimporter_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:ItemImporter:new" }
+
+ecommerce_itemimporter_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:ItemImporter:create" }
+    methods:  POST
+
+ecommerce_itemimporter_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:ItemImporter:edit" }
+
+ecommerce_itemimporter_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:ItemImporter:update" }
+    methods:  [POST, PUT]
+
+ecommerce_itemimporter_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:ItemImporter:delete" }
+
+
+ecommerce_itemimporter_updated:
+    path:     /{id}/data-updated
+    defaults: { _controller: "EcommerceBundle:ItemImporter:updated" }
+
+ecommerce_itemimporter_reset:
+    path:     /{ic}/data-reseted
+    defaults: { _controller: "EcommerceBundle:ItemImporter:reseted" }
+
+ecommerce_itemimporter_restore:
+    path:     /{ic}/data-restored
+    defaults: { _controller: "EcommerceBundle:ItemImporter:restored" }

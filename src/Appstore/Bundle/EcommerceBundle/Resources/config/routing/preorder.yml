@@ -1,0 +1,44 @@
+customer_preorder:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:PreOrder:index" }
+
+customer_preorder_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:PreOrder:show" }
+
+customer_preorder_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:PreOrder:update" }
+    methods:  [POST, PUT]
+
+customer_preorder_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:PreOrder:delete" }
+
+customer_preorder_item:
+    path:     /{id}/add-item
+    defaults: { _controller: "EcommerceBundle:PreOrder:item" }
+
+
+customer_preorder_process:
+    path:      /{id}/{process}/order-process
+    defaults: { _controller: "EcommerceBundle:PreOrder:process" }
+    methods:  [GET, PUT]
+
+customer_preorder_payment_confirm:
+    path:     /{id}/{process}/preorder-payment-confirm
+    defaults: { _controller: "EcommerceBundle:PreOrder:paymentConfirm" }
+
+
+customer_preorder_item_confirm:
+    path:     /{preOrder}/{id}/confirm-item
+    defaults: { _controller: "EcommerceBundle:PreOrder:confirmItem" }
+
+ecommerce_preorder_ajax_payment:
+    path:      /{id}/preorder-payment
+    defaults: { _controller: "EcommerceBundle:PreOrder:payment" }
+    methods:  [POST]
+
+customer_preorder_invoice:
+    path:      /{id}/preorder-invoice
+    defaults: { _controller: "EcommerceBundle:PreOrder:invoice" }

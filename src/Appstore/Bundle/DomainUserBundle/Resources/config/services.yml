@@ -1,0 +1,34 @@
+services:
+#    domain_user.example:
+#        class: Appstore\Bundle\DomainUserBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    appstore.customer.event.listener:
+        class: Appstore\Bundle\DomainUserBundle\EventListener\CustomerListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+
+    appstore.importer.customer_excel_reader:
+       class: Appstore\Bundle\DomainUserBundle\Importer\GpCustomerDataReader
+       arguments: [ @phpexcel ]
+
+
+    app.twig_extension:
+       class: Appstore\Bundle\DomainUserBundle\Twig\CulculationExtension
+       public: false
+       tags:
+          - { name: twig.extension }
+
+    appstore_customer_import:
+            class: Appstore\Bundle\DomainUserBundle\Importer\AssociationMemberExcel
+            calls:
+                - [ setContainer, [ @service_container ] ]
+
+    appstore.importer.customer_excel_data_reader:
+       class: Appstore\Bundle\DomainUserBundle\Importer\AssociationDataReader
+       arguments: [ @phpexcel ]
+
+
+
+

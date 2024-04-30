@@ -1,0 +1,32 @@
+ecommerce_coupon:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Coupon:index" }
+
+ecommerce_coupon_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:Coupon:new" }
+
+ecommerce_coupon_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:Coupon:create" }
+    methods:  POST
+
+ecommerce_coupon_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Coupon:update" }
+    methods:  [GET, PUT]
+
+ecommerce_coupon_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Coupon:edit" }
+
+ecommerce_coupon_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:Coupon:delete" }
+
+ecommerce_coupon_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:Coupon:show" }
+
+
+

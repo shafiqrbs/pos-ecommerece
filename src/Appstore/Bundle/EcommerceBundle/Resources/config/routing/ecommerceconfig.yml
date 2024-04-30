@@ -1,0 +1,9 @@
+ecommerce_config_update:
+    path:     /update
+    defaults: { _controller: "EcommerceBundle:EcommerceConfig:update" }
+    methods:  [POST, PUT]
+
+
+ecommerce_config_modify:
+    path:     /config-modify
+    defaults: { _controller: "EcommerceBundle:EcommerceConfig:modify" }

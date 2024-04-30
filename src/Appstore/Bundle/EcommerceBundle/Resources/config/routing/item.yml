@@ -1,0 +1,154 @@
+ecommerce_item:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Item:index" }
+
+ecommerce_item_download:
+    path:     /download
+    defaults: { _controller: "EcommerceBundle:Item:productDownload" }
+
+ecommerce_item_price_update:
+    path:     /price-update
+    defaults: { _controller: "EcommerceBundle:Item:itemPriceUpdate" }
+
+ecommerce_item_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:Item:show" }
+
+ecommerce_item_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:Item:new" }
+
+ecommerce_item_create:
+    path:      /create
+    defaults: { _controller: "EcommerceBundle:Item:create" }
+    methods:  POST
+    options:
+            expose: true
+
+ecommerce_item_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Item:edit" }
+
+ecommerce_item_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Item:update" }
+    methods:  [POST, PUT]
+
+
+ecommerce_item_upload:
+    path:     /{id}/image-upload
+    defaults: { _controller: "EcommerceBundle:Item:upload" }
+
+ecommerce_item_upload_update:
+    path:     /{id}/image-update
+    defaults: { _controller: "EcommerceBundle:Item:uploadUpdate" }
+    methods:  [POST, PUT]
+
+ecommerce_item_remove:
+    path:     /{id}/remove
+    defaults: { _controller: "EcommerceBundle:Item:delete" }
+
+
+ecommerce_item_status:
+    path:     /{id}/product-status
+    defaults: { _controller: "EcommerceBundle:Item:status" }
+
+ecommerce_item_copy:
+    path:     /{id}/item-copy
+    defaults: { _controller: "EcommerceBundle:Item:itemCopy" }
+
+ecommerce_item_inline_discount_search:
+    path:     /inline-discount-search
+    defaults: { _controller: "EcommerceBundle:Item:discountSelect" }
+    options:
+           expose: true
+
+ecommerce_item_checkbox_applicable:
+    path:     /{id}/{applicable}/checkbox-applicable
+    defaults: { _controller: "EcommerceBundle:Item:checkboxApplicable" }
+    options:
+           expose: true
+
+
+
+ecommerce_item_inline_tag_search:
+    path:     /inline-tag-search
+    defaults: { _controller: "EcommerceBundle:Item:tagSelect" }
+    options:
+           expose: true
+
+ecommerce_item_inline_brand:
+    path:     /inline-brand-search
+    defaults: { _controller: "EcommerceBundle:Item:brandSelect" }
+    options:
+           expose: true
+
+
+ecommerce_item_inline_category_search:
+    path:     /inline-category-search
+    defaults: { _controller: "EcommerceBundle:Item:categorySelect" }
+    options:
+           expose: true
+
+ecommerce_item_inline_update:
+    path:     /inline-Product-update
+    defaults: { _controller: "EcommerceBundle:Item:inlineItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+ecommerce_item_inline_size:
+    path:     /inline-subitem-size
+    defaults: { _controller: "EcommerceBundle:Item:sizeSelect" }
+    options:
+           expose: true
+
+ecommerce_item_inline_unit:
+    path:     /inline-subitem-unit
+    defaults: { _controller: "EcommerceBundle:Item:unitSelect" }
+    options:
+           expose: true
+
+ecommerce_item_inline_subitem_update:
+    path:     /inline-Product-subitem-update
+    defaults: { _controller: "EcommerceBundle:Item:inlineSubItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+ecommerce_subitem_status:
+    path:     /{id}/subitem-status
+    defaults: { _controller: "EcommerceBundle:Item:subitemStatus" }
+    options:
+           expose: true
+
+ecommerce_item_subproduct:
+    path:     /{id}/sub-product
+    defaults: { _controller: "EcommerceBundle:Item:addSubProduct" }
+    methods:  POST
+
+ecommerce_item_subItem_update:
+    path:     /{id}/sub-product-update
+    defaults: { _controller: "EcommerceBundle:Item:updateSubProduct" }
+    methods:  POST
+
+ecommerce_item_gallery:
+    path:     /{item}/upload
+    defaults: { _controller: "EcommerceBundle:Item:uploadItemImage" }
+    options:
+           expose: true
+
+ecommerce_item_subItem_delete:
+    path:     /{id}/sub-item-delete
+    defaults: { _controller: "EcommerceBundle:Item:subItemDelete" }
+
+ecommerce_item_itemkeyvalue_delete:
+    path:     /{id}/item-key-value-delete
+    defaults: { _controller: "EcommerceBundle:Item:keyValueDelete" }
+
+ecommerce_item_attribute_sorted:
+    path:     /{id}/item-key-value-sorted
+    defaults: { _controller: "EcommerceBundle:Item:keyValueSorted" }
+    methods:  POST
+    options:
+           expose: true

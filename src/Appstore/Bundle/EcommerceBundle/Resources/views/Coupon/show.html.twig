@@ -1,0 +1,89 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN ecommerce_coupon HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="ecommerce_coupon-title">
+                    Coupon
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="{{ path('ecommerce_coupon') }}">Coupon</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END ecommerce_coupon HEADER-->
+        <!-- BEGIN ecommerce_coupon CONTENT-->
+
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box blue">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Coupon Details</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="icon-cogs"></i>&nbsp;Tools
+                                    <i class="icon-tasks"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="{{ path('ecommerce_coupon_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a></li>
+                                    <li><a href="{{ path('ecommerce_coupon') }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <ul class="unstyled">
+                                        <li><strong>Name:</strong> {{ entity.name }}</li>
+                                        <li><strong>Discount Amount:</strong> {{ entity.discountAmount|number_format() }}</li>
+                                        <li><strong>Valid Amount:</strong> {{ entity.validAmount|number_format() }}</li>
+                                        <li><strong>Quantity:</strong> {{ entity.quantity }}</li>
+                                        <li><strong>Valid Date:</strong> {{ entity.startDate|date('d-m-Y') }} To {{ entity.endDate|date('d-m-Y') }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                    <tr class="head-grey">
+                                        <th class="numeric" >Coupon Code </th>
+                                        <th class="numeric" >Status</th>
+                                        <th class="numeric" >Order Invoice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for item in entity.couponCodes %}
+                                        <tr>
+                                            <td class="numeric" >{{ item.code  }}</td>
+                                            <td class="numeric" >{% if item.status == 1 %}Used{% endif %}</td>
+                                            <td class="numeric" >{% if item.status == 1 %}{{ item.code.order.invoice  }}{% endif %}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

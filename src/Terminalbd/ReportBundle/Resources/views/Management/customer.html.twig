@@ -1,0 +1,79 @@
+{% extends '::base-management-report.html.twig' %}
+{% block body %}
+    <div id="print-area">
+        <div class="row">
+            <div class="col-md-12 print-bar">
+                <form action="" method="get">
+                    <div class="grid-container-4">
+                        <div class="grid-item">
+                            <label>Start Date</label><br/>
+                            <div class="col-md-6">
+                                <input type="date" class="m-wrap span6 datepicker m-wrap" required="required"  id="startDate" name="startDate" value="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% endif %}">
+                            </div>
+                        </div>
+                        <div class="grid-item">
+                            <label>End Date</label><br/>
+                            <div class="col-md-6">
+                                <input type="date" class="m-wrap span6 datepicker m-wrap" required="required"  id="endDate" name="endDate" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}">
+                            </div>
+                        </div>
+                        <div class="grid-item">
+                            <label>&nbsp;</label><br/>
+                            <div class="col-md-6">
+                                <button type="submit" class='btn btn-download btn-margin-left ajax-btn' value="search" name="submit" ><i class='fa fa-search'></i> Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row print-header">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <p><strong>{{ option.name }}</strong></p>
+                <p><strong>Name of Report: Customer Overview</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-green">
+                        <th>Employee ID</td>
+                        <th class="numeric">Name</th>
+                        <th class="numeric">Details</th>
+                        <th class="numeric">Mobile</th>
+                        <th class="numeric">Credit Limit</th>
+                        <th class="numeric">Order Amount</th>
+                        <th class="numeric">Receive Amount</th>
+                        <th class="numeric">Orders</th>
+                        <th class="numeric">Gender</th>
+                        <th class="numeric">Enable</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.customerId }}</td>
+                            <td>{{ entity.name }}</td>
+                            <td>{{ entity.profession }}</td>
+                            <td class="numeric"><a href="tel:+88 {{ entity.mobile }}"> {{ entity.mobile }}</a></td>
+                            <td>{{ entity.creditLimit }}</td>
+                            <td>{% if customerOrders[entity.id]  is defined and customerOrders[entity.id] is not empty  %}{{ customerOrders[entity.id].total|round(2) }}{% endif %}</td>
+                            <td>{% if customerOrders[entity.id]  is defined and customerOrders[entity.id] is not empty  %}{{ customerOrders[entity.id].receive|round(2) }}{% endif %}</td>
+                            <td>{% if customerOrders[entity.id]  is defined and customerOrders[entity.id] is not empty  %}{{ customerOrders[entity.id].totalOrder|round(2) }}{% endif %}</td>
+                            <td>{{ entity.gender }}</td>
+                            <td>{% if entity.status == 1 %}Active{% else %} In-active{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="pagination pull-center"  >
+            {{ knp_pagination_render(entities) }}
+        </div>
+    </div>
+{% endblock %}
+
+

@@ -1,0 +1,50 @@
+ecommerce_brand:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:ItemBrand:index" }
+
+ecommerce_brand_search:
+    path:     /search
+    defaults: { _controller: "EcommerceBundle:ItemBrand:autoSearch" }
+    options:
+            expose: true
+
+ecommerce_brand_name:
+    path:      /{brand}/brand-name
+    defaults: { _controller: "EcommerceBundle:ItemBrand:searchItemBrandName" }
+    options:
+            expose: true
+
+ecommerce_brand_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:ItemBrand:show" }
+
+ecommerce_brand_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:ItemBrand:new" }
+
+ecommerce_brand_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:ItemBrand:create" }
+    methods:  POST
+
+ecommerce_brand_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:ItemBrand:edit" }
+
+ecommerce_brand_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:ItemBrand:update" }
+    methods:  [POST, PUT]
+
+ecommerce_brand_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:ItemBrand:delete" }
+
+ecommerce_brand_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:ItemBrand:status" }
+
+ecommerce_brand_feature:
+    path:     /{id}/feature
+    defaults: { _controller: "EcommerceBundle:ItemBrand:feature" }
+

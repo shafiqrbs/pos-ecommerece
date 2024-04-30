@@ -1,0 +1,67 @@
+{% for orderItem in entity.orderItems %}
+    <tr id="remove-{{ orderItem.id }}">
+        <input type="hidden" name="itemId[]" value="{{ orderItem.id }}">
+        <td>{{ loop.index }}.</td>
+        <td class="numeric" >{{ orderItem.itemName }}</td>
+        <td class="numeric" >{{ orderItem.brandName }}</td>
+        <td class="numeric" >{{ orderItem.categoryName }}</td>
+        <td class="numeric" >
+            {% if entity.process in ['created','confirm','wfc']  %}
+                <input type="text"  name="quantity" data-action="{{ path('customer_medicine_item_update',{'order':entity.id,'id':orderItem.id}) }}" id="quantity-{{ orderItem.id }}" class="form-control m-wrap-custom  span8 input-number" value="{{ orderItem.quantity }}" min="1" max="1000" >
+                {% if orderItem.UnitName is not empty %}
+                    <button type="button" class="btn mini yellow">{{ orderItem.UnitName }}</button>
+                {% endif %}
+            {% else %}
+                {{ orderItem.quantity }}
+            {% endif %}
+        </td>
+        <td class="numeric" >{{ orderItem.price }}</td>
+        <td class="numeric" ><strong>{{ orderItem.subTotal }}</strong></td>
+        <td class="numeric" >
+            {% if entity.process in ['created','confirm','wfc']  %}
+                <div class="btn-group"><a  data-id="{{ orderItem.id }}" data-url="{{ path('customer_medicine_item_delete',{'order':entity.id,'id':orderItem.id}) }}" data-value="{{ globalOption.slug }}" class="btn mini red item-remove" ><i class="icon-trash"></i></a></div>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Total</strong></span></td>
+    <td class="numeric" colspan="1" ><strong>{{ entity.subTotal|number_format }}</strong></td>
+    <td></td>
+</tr>
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Discount</strong></span></td>
+    <td class="numeric" id="discount">{{ entity.discount }}</td>
+    <td></td>
+</tr>
+{% if entity.coupon is not empty %}
+    <tr>
+        <td class="numeric" colspan="6" ><span class="pull-right">Coupon Code({{ entity.coupon.couponCode }})</span></td>
+        <td class="numeric">{{ entity.couponAmount }}</td>
+        <td></td>
+    </tr>
+{% endif %}
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Grand Total</strong></span></td>
+    <td class="numeric"><strong id="total">{{ ( entity.total)|number_format }}</strong></td>
+    <td></td>
+</tr>
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Paid Amount</strong></span></td>
+    <td class="numeric"><strong id="receive">{{ ( entity.paidAmount)|number_format }}</strong></td>
+    <td></td>
+</tr>
+{% if entity.dueAmount  > 0 %}
+    <tr>
+        <td class="numeric" colspan="6" ><span class="pull-right"><strong>Due Amount</strong></span></td>
+        <td class="numeric" >{{ ( entity.dueAmount)|number_format }}</td>
+        <td></td>
+    </tr>
+{% endif %}
+{% if entity.returnAmount  > 0 %}
+                                            <tr>
+                                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Return Amount</strong></span></td>
+                                                <td class="numeric">{{ ( entity.returnAmount)|number_format }}</td>
+                                                <td></td>
+                                            </tr>
+                                        {% endif %}

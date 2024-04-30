@@ -1,0 +1,382 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN item HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="item-title">
+                    Product Details
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('ecommerce_item') }}">Product</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#"> Add new product details</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END item HEADER-->
+        <!-- BEGIN item CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="{{ path('ecommerce_item') }}"><i class="icon-th-list"></i>&nbsp;Product</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+                        <div class="row-fluid">
+                            <div class="span8">
+                                <div class="row-fluid">
+
+                                    <div class="span8">
+                                        <div class="control-group">
+                                            <label class="control-label" for="name">Item Name<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-font"></i>
+                                                    {{ form_widget(form.webName) }}
+                                                    {{ form_errors(form.webName) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span2">
+                                        <div class="control-group">
+                                            <label class="control-label" for="name">&nbsp;</label>
+                                            Sub Item {{ form_widget(form.subProduct) }}
+                                        </div>
+                                    </div>
+                                    <div class="span2">
+                                        <div class="control-group">
+                                            <label class="control-label" for="name">Item Unit</label>
+                                            {{ form_widget(form.productUnit) }}
+                                            {{ form_errors(form.productUnit) }}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Product Bangla Name</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.productBengalName) }}
+                                                    {{ form_errors(form.productBengalName) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <div class="row-fluid">
+
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Category<span class="required">*</span></label>
+                                            <div class="controls">
+                                                {{ form_widget(form.category) }}
+                                                {{ form_errors(form.category) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Brand</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.brand) }}
+                                                {{ form_errors(form.brand) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Made in</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.country) }}
+                                                {{ form_errors(form.country) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" >Colors</label>
+                                            <div class="clearfix" style="height:10px"></div>
+                                            <div class="controls">
+                                                {{ form_widget(form.itemColors) }}
+                                                {{ form_errors(form.itemColors) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="warningLabel">Warning Type</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.warningLabel) }}
+                                                {{ form_errors(form.warningLabel) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span8">
+                                        <div class="control-group">
+                                            <label class="control-label" for="warningText">Item Assurance</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.itemAssurance) }}
+                                                {{ form_errors(form.itemAssurance) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                        <div class="control-group">
+                                            <label class="control-label" >Description</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.shortContent) }}
+                                                {{ form_errors(form.shortContent) }}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" >Product image</label>
+                                            <div class="controls">
+                                                <div data-provides="fileupload" class="fileupload fileupload-new">
+                                                    <div  class="fileupload-new thumbnail">
+                                                        {% if(entity.webPath) %}
+                                                            <img class="fileupload-preview fileupload-exists thumbnail" alt="" src="{{ image(entity.webPath).resize(250,200) }}">
+                                                        {% else %}
+                                                            <img alt="" src="http://www.placehold.it/250x200/EFEFEF/AAAAAA&amp;text=no+image">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div  class="fileupload-preview fileupload-exists thumbnail"></div>
+                                                    <div>
+                                                        <span class="btn btn-file">
+                                                            <span class="fileupload-new">Select image</span>
+                                                            <span class="fileupload-exists">Change</span>
+                                                            {{ form_widget(form.file) }}
+                                                        </span>
+                                                        <div class="clearfix"><br/></div>
+                                                        {{ form_errors(form.file) }}
+                                                        <a data-dismiss="fileupload" class="btn fileupload-exists" href="#">Remove</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="span4">
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <div class="control-group">
+                                            <label class="control-label" for="size">Size/Weight/Dimension</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.size) }}
+                                                {{ form_errors(form.size) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="control-group">
+                                            <label class="control-label" for="productUnit">Size Unit</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.sizeUnit) }}
+                                                {{ form_errors(form.sizeUnit) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <div class="control-group">
+                                            <label class="control-label" for="purchasePrice">Purchase Price</label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-money"></i>
+                                                    {{ form_widget(form.purchasePrice) }}
+                                                    {{ form_errors(form.purchasePrice) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="control-group">
+                                            <label class="control-label" for="salesPrice">Sales Price <span class="required">*</span></label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-money"></i>
+                                                    {{ form_widget(form.salesPrice) }}
+                                                    {{ form_errors(form.salesPrice) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="quantity">Quantity</label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-sort-by-order"></i>
+                                                    {{ form_widget(form.quantity) }}
+                                                    {{ form_errors(form.quantity) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="salesPrice">Min Qnt</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.minQuantity) }}
+                                                {{ form_errors(form.minQuantity) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span4">
+                                        <div class="control-group">
+                                            <label class="control-label" for="salesPrice">Max Qnt</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.maxQuantity) }}
+                                                {{ form_errors(form.maxQuantity) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span12 ">
+                                        <div class="control-group">
+                                            <label class="control-label" >Discount</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.discount) }}
+                                                {{ form_errors(form.discount) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12 ">
+                                        <div class="control-group">
+                                            <label class="control-label" >Promotion</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.promotion) }}
+                                                {{ form_errors(form.promotion) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12 ">
+                                        <div class="control-group">
+                                            <label class="control-label" >Tags</label>
+                                            <div class="clearfix" style="height:10px"></div>
+                                            <div class="controls">
+                                                {{ form_widget(form.tag) }}
+                                                {{ form_errors(form.tag) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {#<div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" >Description</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.content) }}
+                                        {{ form_errors(form.content) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>#}
+                            <!--/span-->
+
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right">
+                                <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                <button type="submit" class="btn yellow"><i class="icon-refresh"></i> Reset</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                        <!-- END FORM-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .popover{
+            width: 250px !important;
+        }
+        input[class*="span"].m-wrap {
+            height: 33px!important;
+        }
+
+        .select2-container-multi .select2-choices .select2-search-field input{
+            height: auto!important;
+        }
+        input[class*="span"].m-wrap {
+            height: 33px!important;
+        }
+
+        .select2-container-multi .select2-choices .select2-search-field input{
+            height: auto!important;
+            min-height: 20px !important;
+        }
+        .row-fluid [class*="span"]{
+            min-height: 33px !important;
+        }
+    </style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@InventoryBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    ApproveProcess();
+{% endblock %}

@@ -1,0 +1,91 @@
+customer_order:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Order:index" }
+
+customer_order_archive:
+    path:     /archive
+    defaults: { _controller: "EcommerceBundle:Order:archive" }
+
+customer_order_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:Order:new" }
+
+customer_order_edit:
+    path:     /edit/{id}
+    defaults: { _controller: "EcommerceBundle:Order:edit" }
+
+
+customer_order_update_inline:
+    path:     /order-process-inline
+    defaults: { _controller: "EcommerceBundle:Order:inlineProcessUpdate" }
+
+customer_order_data_source:
+    path:     /order-process-sourcess
+    defaults: { _controller: "EcommerceBundle:Order:orderProcessSource" }
+
+customer_order_confirm:
+    path:     /{id}/order-confirm
+    defaults: { _controller: "EcommerceBundle:Order:confirm" }
+    methods:  [GET, PUT]
+
+
+customer_order_print_invoice:
+    path:     /invoice-print/{id}
+    defaults: { _controller: "EcommerceBundle:Order:print" }
+
+customer_order_pdf_invoice:
+    path:     /invoice-print/{id}
+    defaults: { _controller: "EcommerceBundle:Order:pdf" }
+
+customer_order_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:Order:show" }
+
+customer_order_invoice_archive:
+    path:     /{id}/invoice-archive
+    defaults: { _controller: "EcommerceBundle:Order:archiveProcess" }
+
+customer_order_invoice_delivered:
+    path:     /{id}/invoice-delivered
+    defaults: { _controller: "EcommerceBundle:Order:deliveredProcess" }
+
+order_stock_item_search:
+    path:     /order-item-search
+    defaults: { _controller: "EcommerceBundle:Order:autoSearch" }
+    options:
+            expose: true
+
+order_item_stock_details:
+    path:     /{id}/order-medicine-item-details
+    defaults: { _controller: "EcommerceBundle:Order:stockDetails" }
+    options:
+            expose: true
+
+order_ajax_discount:
+    path:     /{id}/order-special-discount
+    defaults: { _controller: "EcommerceBundle:Order:ajaxDiscount" }
+    options:
+            expose: true
+
+customer_order_item:
+    path:     /{id}/customer-order-item
+    defaults: { _controller: "EcommerceBundle:Order:orderItemAdd" }
+    methods:  POST
+    options:
+            expose: true
+
+customer_medicine_item_update:
+    path:      /{order}/{id}/order-item-update
+    defaults: { _controller: "EcommerceBundle:Order:itemUpdate" }
+    methods:  GET
+    options:
+            expose: true
+
+customer_medicine_item_delete:
+    path:      /{order}/{id}/medicine-item-delete
+    defaults: { _controller: "EcommerceBundle:Order:itemDelete" }
+
+customer_order_attach_download:
+    path:      /{id}/attach-download
+    defaults: { _controller: "EcommerceBundle:Order:downloadAttachFile" }
+

@@ -1,0 +1,27 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: superstore_db
+    database_user: forge
+    database_password: houVNWDWiLBBdCT5CyHb
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+    sms_username: null
+    sms_password: null
+    x-api-key: terminalbd
+    x-api-value: terminalbd@aps
+    location_level_labels:
+        - Division
+        - District
+        - Thana
+    domain.main: terminalbd.com
+    domain.ecommerce: poskeeper.com
+    portal.copyright: Terminalbd
+    portal.power: Terminalbd
+    portal.sponsor: Terminalbd

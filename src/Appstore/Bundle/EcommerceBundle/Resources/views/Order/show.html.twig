@@ -1,0 +1,297 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Order
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('customer_order') }}">Manage Order</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Order Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Order Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn purple"  href="{{ path('customer_order_print_invoice',{'id':entity.id}) }} " target="_blank"><i class="icon-print"></i>&nbsp; Print</a>
+                                <a class="btn yellow" href="{{ path('customer_order')}}"><i class="icon-th-list"></i>&nbsp;Orders</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <div class="">
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label><strong>Bill Overview</strong></label>
+                                            <ul class="unstyled" >
+                                                <li><strong>Invoice</strong>:#&nbsp;{{ entity.invoice }}</li>
+                                                <li><strong>Grand Total</strong>:&nbsp;{{ entity.grandTotalAmount }}</li>
+                                                {% if entity.discountAmount > 0 %}
+                                                    <li><strong>Discount</strong>:&nbsp;{{ entity.discountAmount }}</li>
+                                                {% endif %}
+                                                <li><strong>Delivery Fee</strong>:&nbsp;{{ entity.shippingCharge }}</li>
+                                                <li><strong>Paid</strong>:&nbsp;{{ entity.paidAmount }}</li>
+                                                {% if entity.paidAmount <  entity.grandTotalAmount and entity.dueAmount > 0 %}
+                                                    <li><strong>Due</strong>:&nbsp;{{ entity.dueAmount }}</li>
+                                                {% elseif entity.paidAmount >  entity.grandTotalAmount and entity.returnAmount > 0 %}
+                                                    <li><strong>Return</strong>:&nbsp;{{ entity.returnAmount }}</li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label><strong>{{ entity.delivery|capitalize }} Address</strong></label>
+                                            <ul class="unstyled" >
+                                                <li><strong>Name</strong>:&nbsp;{{ entity.createdBy.profile.name }}</li>
+                                                <li><strong>Mobile</strong>:&nbsp;{{ entity.createdBy.profile.mobile }}</li>
+                                                <li><strong>Location</strong>:&nbsp;{{ entity.createdBy.profile.location.name }}</li>
+                                                <li>{{ entity.address }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label><strong>Process Details</strong></label>
+                                            <ul class="unstyled" >
+                                                {% if entity.cashOnDelivery == 1 %}
+                                                    <li><strong>Payment Method</strong>:&nbsp;Cash On Delivery</li>
+                                                {% endif %}
+                                                <li><strong>Shipping Method</strong>:&nbsp;{{ entity.delivery|capitalize }}</li>
+                                                <li><strong>Delivery Date</strong>:&nbsp;{{ entity.deliveryDate|date('d-m-Y') }}</li>
+                                                <li><strong>Process Status</strong>:&nbsp;{{ entity.process|capitalize }}</li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label><strong>Payment </strong></label>
+                                            {% if entity.accountMobileBank is not empty %}
+                                                <ul class="unstyled" >
+                                                    <li><strong>Receive Mob.</strong>:&nbsp;{{ entity.accountMobileBank.mobile }}</li>
+                                                    <li><strong>Service</strong>:&nbsp;{{ entity.accountMobileBank.serviceName }}</li>
+                                                    <li><strong>Sender Mob.</strong>:&nbsp;{{ entity.mobileAccount }}</li>
+                                                    <li><strong>Transaction ID</strong>:&nbsp;{{ entity.transaction }}</li>
+                                                </ul>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <th class="numeric" ><i class="icon-reorder"></i></th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Size/Weight/Dimension</th>
+                                    <th class="numeric" >Color</th>
+                                    <th class="numeric" >Quantity</th>
+                                    <th class="numeric" >Unit Price</th>
+                                    <th class="numeric" >Total Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in entity.orderItems %}
+                                    <tr id="remove-{{ item.id }}">
+                                        <td class="numeric" >{{ item.itemName }}</td>
+                                        <td class="numeric" >{% if  item.size %}{{ item.size.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if item.color is not empty %}{{ item.color.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ item.quantity }}&nbsp;{{ item.unitName }}</td>
+                                        <td class="numeric" >{{ item.price }}</td>
+                                        <td class="numeric" >{{ item.subTotal }}</td>
+                                    </tr>
+
+                                {% endfor %}
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right">Total</span></td>
+                                    <td class="numeric" colspan="1" >=&nbsp;{{ entity.totalAmount|number_format }}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right">Delivery Charge</span></td>
+                                    <td class="numeric">=&nbsp;{{ entity.shippingCharge }}</td>
+                                    <td></td>
+                                </tr>
+
+                                {% if entity.ecommerceConfig.vatEnable == 1 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Vat & Tax</span></td>
+                                        <td class="numeric">=&nbsp;{{ entity.vat }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                {% if entity.discountAmount > 0 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Discount Amount</span></td>
+                                        <td class="numeric">=&nbsp;{{ ( entity.discountAmount)|number_format }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                {% if entity.coupon is not empty %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Coupon Code({{ entity.coupon.couponCode }})</span></td>
+                                        <td class="numeric">=&nbsp;{{ entity.couponAmount }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right">Grand Total</span></td>
+                                    <td class="numeric"><strong>=&nbsp;{{ ( entity.grandTotalAmount)|number_format }}</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right">Paid Amount</span></td>
+                                    <td class="numeric"><strong>=&nbsp;{{ ( entity.paidAmount)|number_format }}</strong></td>
+                                    <td></td>
+                                </tr>
+                                {% if entity.dueAmount  > 0 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Due Amount</span></td>
+                                        <td class="numeric" >=&nbsp;{{ ( entity.dueAmount)|number_format }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                {% if entity.returnAmount  > 0 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Return Amount</span></td>
+                                        <td class="numeric">=&nbsp;{{ ( entity.returnAmount)|number_format }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="form-actions portlet box blue">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="icon-reorder"></i>Payment Information</div>
+                            </div>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <thead class="flip-content ">
+                            <tr class="head-green">
+                                <th class="numeric" >Date</th>
+                                <th class="numeric" >Transaction Type</th>
+                                <th class="numeric" >Payment Mobile</th>
+                                <th class="numeric" >Transaction ID</th>
+                                <th class="numeric" >Receive Mobile</th>
+                                <th class="numeric" >Receive Amount</th>
+                                <th class="numeric" >Return Amount</th>
+                                <th class="numeric" >Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for payment in entity.orderPayments %}
+                                <tr id="remove-{{ payment.id }}">
+                                    <td>{{ payment.updated|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ payment.transactionType }}</td>
+                                    <td class="numeric" >{{ payment.mobileAccount }}</td>
+                                    <td class="numeric" >{{ payment.transaction }}</td>
+                                    <td class="numeric" >{{ payment.accountMobileBank.name }}</td>
+                                    <td class="numeric" >{% if payment.transactionType =='Payment' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                    <td class="numeric" >{% if payment.transactionType =='Return' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                    <td class="numeric" >
+                                        {% if payment.status == 1  %}
+                                            <a class="btn  mini green" data-url="" ><i class=" icon-thumbs-up"></i> Accept</a>
+                                        {% elseif payment.status == 2 %}
+                                            <a class="btn  mini red" data-url="" ><i class=" icon-thumbs-down"></i> Reject</a>
+                                        {% else %}
+                                            <a class="btn  mini yellow" data-url="" ><i class=" icon-refresh"></i> Waiting</a>
+                                        {% endif %}
+                                        {% set postCondition = {'wfc': 'wfc' ,'created':'created'} %}
+                                        {% if entity.process in  postCondition|keys %}
+                                            <a class="btn  mini red remove" data-url="{{ path('order_payment_delete',{'shop':globalOption.slug,'id':payment.id}) }}"  data-id="{{ payment.id }}" ><i class=" icon-trash"></i> Delete</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td colspan="8"><br/></td>
+                            </tr>
+                            <tr>
+                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Grand Total </strong></span></td>
+                                <td class="numeric" >=&nbsp;{{ entity.grandTotalAmount|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+                            <tr>
+                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Total Receive</strong></span></td>
+                                <td class="numeric" >=&nbsp;{{ entity.paidAmount|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+
+                            <tr>
+                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Due Amount</strong></span></td>
+                                <td class="numeric" >=&nbsp;{{ entity.dueAmount|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="clearfix"> </div>
+                        <!--/span-->
+                        <div class="form-actions portlet box yellow">
+                            <div class="portlet-title"><div class="caption"><i class="icon-reorder"></i>Comments Information</div></div>
+                        </div>
+                        <div class="clearfix"><br/> </div>
+                        {% set paymentID = entity.globalOption.id~'-ecommerce-payment-'~entity.id %}
+                        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': paymentID } %}
+                        <div class="clearfix"><br/> </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@EcommerceBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+
+    $('#fos_comment_comment_body').addClass('span12');
+    $('.fos_comment_submit input[type="submit"]').addClass('btn blue');
+{% endblock %}

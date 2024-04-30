@@ -18,17 +18,6 @@ web/nano.save
 bin/*
 !bin/build.sh
 
-app/config/parameters.yml
-
-
-web/.htaccess
-
-
-
-# Composer
-composer.phar
-composer.json
-composer.lock
 
 # IDE
 .idea/*

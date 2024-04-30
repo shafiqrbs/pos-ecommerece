@@ -1,0 +1,101 @@
+{% extends '::base-management-report.html.twig' %}
+{% block body %}
+    <div id="print-area">
+        <div class="row print-header">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <p><strong>{{ option.name }}</strong></p>
+                <p><strong>Name of Report: Sales Details</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet-body form">
+                    <div class="grid-container">
+                        <div class="item">
+                            <h4>About:</h4>
+                            <ul class="unstyled">
+                                {% if entity.customer is not empty %}<li><strong>Customer #:</strong>&nbsp;{{ entity.customer.name }}</li>{% endif %}
+                                {% if entity.customer is not empty %}<li><strong>Mobile #:</strong>&nbsp;{{ entity.customer.mobile }}</li>{% endif %}
+                                {% if entity.customer is not empty %}<li><strong>Address #:</strong>&nbsp;{{ entity.customer.address }}</li>{% endif %}
+                                {% if entity.customer is not empty and entity.customer.location is not empty   %}<li><strong>Location #:</strong>&nbsp;{{ entity.customer.location.name }}, {{ entity.customer.location.parent.name }}</li>{% endif %}
+                                <li><strong>Created:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <h4>Payment Details:</h4>
+                            <ul class="unstyled">
+                                <li><strong>Total BDT:</strong>&nbsp;{{ entity.total|number_format() }}</li>
+                                <li><strong>Payment BDT:</strong>&nbsp;{{ entity.payment|number_format() }}</li>
+                                <li><strong>Discount BDT:</strong>&nbsp;{{ entity.discount|number_format() }}</li>
+                                <li><strong>Due BDT:</strong>&nbsp;{{ entity.due|number_format() }}</li>
+                                <li><strong>Payment status</strong>&nbsp;{{  entity.paymentStatus|capitalize }}</li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <h4>Payment Method:</h4>
+                            <ul class="unstyled">
+                                <li><strong>Process:</strong>&nbsp;{{ entity.process }}</li>
+                                <li><strong>Payment Method:</strong>&nbsp;{% if entity.transactionMethod is not empty %}{{ entity.transactionMethod.name }}{% endif %}</li>
+                                {% if entity.accountMobileBank is not empty %}<li><strong>Received Mobile:</strong>&nbsp;{{ entity.accountMobileBank.name }}</li>{% endif %}
+                                {% if entity.paymentMobile is not empty %}<li><strong>Mobile/Transaction:</strong>&nbsp;{{ entity.paymentMobile }}/{{ entity.transactionId }}</li>{% endif %}
+                                {% if entity.accountBank is not empty %}<li><strong>Received Bank:</strong>&nbsp;{{ entity.accountBank.name }}</li>{% endif %}
+                                {% if entity.paymentCard is not empty %}<li><strong>Payment Card/No:</strong>&nbsp;{{ entity.paymentCard.name }}/{{ entity.cardNo }}</li>{% endif %}
+                                {% if entity.bank is not empty %}<li><strong>Bank:</strong>&nbsp;{{ entity.bank.name  }}</li>{% endif %}
+                                <li><strong>Created By:</strong>&nbsp;{% if entity.createdBy is defined and entity.createdBy is not empty %}{{ entity.createdBy }}{% endif %}</li>
+                                <li><strong>Confirmed By:</strong>&nbsp;{% if entity.approvedBy is defined and entity.approvedBy is not empty %}{{ entity.approvedBy }}{% endif %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <style>
+                        .grid-container {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr); /* Three equal-width columns */
+                            grid-gap: 10px; /* Gap between grid items */
+                        }
+
+                        .item {
+                            background-color: #f2f2f2;
+                            padding: 20px;
+                            text-align: center;
+                        }
+                    </style>
+                    <div class="row-fluid box green">
+                        {% if entity.salesItems is defined and  entity.salesItems is not empty  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-green">
+                                    <th>S/N</th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Qnt</th>
+                                    <th class="numeric" >Sales Price</th>
+                                    <th class="numeric" >Discount Price</th>
+                                    <th class="numeric" >Sub-total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for salesItem in entity.salesItems %}
+                                    <tr>
+                                        <td class="numeric" >{{ loop.index }}</td>
+                                        <td class="numeric" >{{ salesItem.item.name }}/{{ salesItem.item.nameBn }}</td>
+                                        <td class="numeric" >{{ salesItem.quantity }}</td>
+                                        <td class="numeric" >{{ salesItem.estimatePrice|number_format() }}</td>
+                                        <td class="numeric" >{{ salesItem.salesPrice|number_format() }}</td>
+                                        <td class="numeric" >{{ salesItem.subTotal|number_format() }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot><tr><td colspan="8">Narration: {{ entity.remark|raw }}</td></tr></tfoot>
+                            </table>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

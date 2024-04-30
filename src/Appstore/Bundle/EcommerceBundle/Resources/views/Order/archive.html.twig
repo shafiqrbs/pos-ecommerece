@@ -1,0 +1,153 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Order Archive
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('customer_order') }}">Manage Order</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Order Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Order Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="{{ path('customer_order') }}"><i class="icon-th-list"></i> Order</a>
+                                <a class="btn red" href="{{ path('customer_order_new') }}"><i class="icon-plus-sign"></i> New Order</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="customer" name="customer" class="span12 m-wrap select2Customer" value="{% if searchForm.customer is defined %}{{ searchForm.customer }}{% endif %}" autocomplete="off" placeholder="Enter customer">
+                                        </div>
+                                        <div class="span2">
+                                            <input type="text" id="deliveryDate" name="deliveryDate" class="span12 m-wrap dateCalendar" value="{% if searchForm.deliveryDate is defined %}{{ searchForm.deliveryDate }}{% endif %}" autocomplete="off" placeholder="Enter delivery date">
+                                        </div>
+                                        <div class="span2">
+                                            <select name="courier" id="courier" class="leftMargin m-wrap span12">
+                                                <option value="" >--Courier Service--</option>
+                                                {% for key,row in couriers %}
+                                                    <option {% if searchForm.mode is defined and searchForm.mode == row.id %} selected="selected" {% endif %} value="{{ row.id }}" >{{ row.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="span5">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <input type="text" id="startDate" name="startDate"  class="span4 search-input m-wrap  dateCalendar" value="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% else %}Start date{% endif %} ">
+                                                    <input type="text" id="endDate" name="endDate"  class="span4 m-wrap search-input  m-ctrl-medium dateCalendar" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% else %}End date{% endif %} ">
+                                                    <input type="text" id="invoice" name="invoice"  class="leftMargin span4  m-wrap" value="{% if searchForm.invoice is defined %}{{ searchForm.invoice }}{% endif %}"  autocomplete="off" placeholder="Invoice no">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <td>&nbsp;&nbsp;<i class="icon-list"></i> Created</td>
+                                    <th class="numeric" >Delivery</th>
+                                    <th class="numeric" >Slot</th>
+                                    <th class="numeric" >Name</th>
+                                    <th class="numeric" >Mobile</th>
+                                    <th class="numeric" >Invoice</th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >SubTotal</th>
+                                    <th class="numeric" >Shipping</th>
+                                    <th class="numeric" >Total</th>
+                                    <th class="numeric" >Courier</th>
+                                    <th class="numeric" >Tracking No</th>
+                                    <th class="numeric" >File</th>
+                                    <th class="numeric" >Process</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr id="remove-tr-{{ entity.id }}">
+                                        <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.deliveryDate|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.deliverySlot }}</td>
+                                        <td class="numeric" >{{ entity.customerName }}</td>
+                                        <td class="numeric" >{{ entity.customerMobile }}</td>
+                                        <td class="numeric" >{{ entity.invoice }}</td>
+                                        <td class="numeric" >{{ entity.item }}</td>
+                                        <td class="numeric" >{{ entity.subTotal }}</td>
+                                        <td class="numeric" >{{ entity.shippingCharge }}</td>
+                                        <td class="numeric" >{{ entity.total }}</td>
+                                        <td class="numeric" >{% if entity.path is not empty %}<a href="{{ path('customer_order_attach_download',{'id':entity.id}) }}" > <i class="fa fa-download"></i> <strong>Download</strong></a>{% endif %}</td>
+                                        <td class="numeric" >{% if entity.courier %}{{ entity.courier.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.courier %}{{ entity.trackingNo }}{% endif %}</td>
+                                        <td class="numeric" >
+                                            <span class="btn mini yellow">{{ entity.process|capitalize }}</span>
+                                        </td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                                <a href="javascript:" data-title="Invoice No.{{ entity.invoice }}" data-action="{{ path('customer_order_show', { 'id': entity.id }) }}" class="btn green mini view" ><i class="icon-eye-open"></i>&nbsp;</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    $(".editable").editable();
+    ApproveProcess();
+{% endblock %}

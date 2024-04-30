@@ -1,0 +1,131 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Category Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('ecommerce_category') }}">Category</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Category Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Category List Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('ecommerce_category_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create New</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body flip-scroll">
+                        <div class="row-fluid">
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid">
+                                    <div class="span4">
+                                        <input type="text" id="parent" name="parent" class="span12 m-wrap" value="{% if searchForm.parent is defined %}{{ searchForm.parent }}{% endif %}" autocomplete="off" placeholder="Enter category parent name ">
+                                    </div>
+                                    <div class="span4">
+                                        <input type="text" id="nameBn" name="nameBn" class="span12 m-wrap" value="{% if searchForm.nameBn is defined %}{{ searchForm.nameBn }}{% endif %}" autocomplete="off" placeholder="Enter category name bangla ">
+                                    </div>
+                                    <div class="span4">
+                                        <div class="controls">
+                                            <div class="input-append span11">
+                                                <input type="text" id="name" name="name" class="span11 m-wrap" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}" autocomplete="off" placeholder="Enter name ">
+                                                <div class="btn-group">
+                                                    <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        {% include('flash-message.html.twig')  %}
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <thead class="flip-content ">
+                            <tr class="head-grey">
+                                {%  set sort = app.request.query.get('sort') %}
+                                {%  set direction = app.request.query.get('direction') %}
+                                <th {% if pagination.isSorted('e.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Name', 'e.name') }}{% if( direction == 'desc' and sort == 'e.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                <th {% if pagination.isSorted('e.nameBn') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Name(Bangla)', 'e.nameBn') }}{% if( direction == 'desc' and sort == 'e.nameBn') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                <th {% if pagination.isSorted('p.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Parent', 'p.name') }}{% if( direction == 'desc' and sort == 'p.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                <th {% if pagination.isSorted('e.feature') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Is Feature', 'e.feature') }}{% if( direction == 'desc' and sort == 'e.feature') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                <th {% if pagination.isSorted('e.path') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Image', 'e.path') }}{% if( direction == 'desc' and sort == 'e.path') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                <th {% if pagination.isSorted('e.status') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Status', 'e.status') }}{% if( direction == 'desc' and sort == 'e.status') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                <th class="numeric" >Action</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for entity in pagination %}
+                                <tr>
+                                    <td class="numeric" ><a href="{{ path('ecommerce_category_edit',{'id': entity.id })}}">{{ entity.name }}</a></td>
+                                    <td class="numeric" >{{ entity.nameBn }}</td>
+                                    <td class="numeric">{% if entity.parent is not empty %}{{ entity.parent.name|default('---') }}{% endif %}</td>
+                                    <td class="numeric" >
+                                        {% if entity.feature == 1 %}
+                                            <a href="{{ path('ecommerce_category_feature', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-ok"></i>&nbsp;</a>
+                                        {% else %}
+                                            <a href="{{ path('ecommerce_category_feature', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-remove"></i></a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="numeric" >
+                                        {% if entity.webPath == 1 %}
+                                            <a class="btn mini blue" href="javascript:">Yes</a>
+                                        {% else %}
+                                            <a href="javascript:" class="btn mini yellow">No</a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="numeric" >
+                                        {% if entity.status == 1 %}
+                                            <a href="{{ path('ecommerce_category_status', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-ok"></i>&nbsp;</a>
+                                        {% else %}
+                                            <a href="{{ path('ecommerce_category_status', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-remove"></i></a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="numeric" >
+                                      <a href="{{ path('ecommerce_category_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                        <a href="{{ path('ecommerce_category_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                        <a  href="{{ path('ecommerce_category_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                        <div class="pagination pull-center"  >
+                            {{ knp_pagination_render(pagination) }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

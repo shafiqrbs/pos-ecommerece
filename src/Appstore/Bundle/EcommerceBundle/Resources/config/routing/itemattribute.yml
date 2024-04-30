@@ -1,0 +1,34 @@
+ecommerce_itemattribute:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:index" }
+
+ecommerce_itemattribute_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:show" }
+
+ecommerce_itemattribute_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:new" }
+
+ecommerce_itemattribute_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:create" }
+    methods:  POST
+
+ecommerce_itemattribute_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:edit" }
+
+ecommerce_itemattribute_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:status" }
+
+ecommerce_itemattribute_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:update" }
+    methods:  [POST, PUT]
+
+ecommerce_itemattribute_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:ItemAttribute:delete" }
+

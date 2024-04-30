@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    E-commerce  Home Customize
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('appearancefeaturewidget') }}"> E-commerce Page Customize</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i> E-commerce Customize</div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                Tools
+                                <i class="icon-tasks"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="{{ path('appearancefeaturewidget_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a></li>
+                                <li><a href="{{ path('appearancefeaturewidget') }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: relative" class="portlet-body flip-scroll dd" id="nestable_list_2">
+                    <ul class="sortable grid dd-list">
+                        {% for entity in entities %}
+                            <li  data-id="{{ entity.id }}" id="item_{{ entity.id }}" class="dd-item dd3-item">
+                                <span data-id="{{ entity.id }}" class="dd-handle dd3-handle"></span>
+                                <div class="dd3-content">{{ entity.pageName }}-{{ entity.position }}-{% if entity.jsFeature is not empty %}{{ entity.jsFeature.name }}{% endif %}</div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block documentready %}
+
+    {{ parent() }}
+    $('.sortable').sortable({
+        handle: 'span'
+    });
+    $( ".sortable" ).on( "sortupdate", function( event, ui ) {
+        var serialized = $(".sortable").sortable("serialize");
+        $.ajax({
+            url: '{{ path('appearancefeaturewidget_list_sorted') }}',
+            type: "POST",
+            data: serialized
+        });
+
+    })
+
+{% endblock %}

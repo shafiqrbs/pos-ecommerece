@@ -1,0 +1,92 @@
+ecommerce_ecommercehome:
+    resource: "@EcommerceBundle/Resources/config/routing/ecommercehome.yml"
+    prefix:   /home
+
+ecommerce_customer:
+    resource: "@EcommerceBundle/Resources/config/routing/customer.yml"
+    prefix:   /customer
+
+eecommerce_templatecustomize:
+    resource: "@EcommerceBundle/Resources/config/routing/templatecustomize.yml"
+    prefix:   /template
+
+ecommerce_coupon:
+    resource: "@EcommerceBundle/Resources/config/routing/coupon.yml"
+    prefix:   /coupon
+
+ecommerce_promotion:
+    resource: "@EcommerceBundle/Resources/config/routing/promotion.yml"
+    prefix:   /promotion
+
+eecommerce_discount:
+    resource: "@EcommerceBundle/Resources/config/routing/discount.yml"
+    prefix:   /discount
+
+ecommerce_ecommerce:
+    resource: "@EcommerceBundle/Resources/config/routing/ecommerce.yml"
+    prefix:   /product
+
+ecommerce_itemimorter:
+    resource: "@EcommerceBundle/Resources/config/routing/itemimporter.yml"
+    prefix:   /item-importer
+
+ecommerce_item_category:
+    resource: "@EcommerceBundle/Resources/config/routing/itemcategory.yml"
+    prefix:   /item-category
+
+ecommerce_courier:
+    resource: "@EcommerceBundle/Resources/config/routing/courier.yml"
+    prefix:   /courier-service
+
+ecommerce_delivery_location:
+    resource: "@EcommerceBundle/Resources/config/routing/location.yml"
+    prefix:   /delivery-location
+
+ecommerce_time_period:
+    resource: "@EcommerceBundle/Resources/config/routing/deliverytime.yml"
+    prefix:   /delivery-time
+
+ecommerce_config:
+    resource: "@EcommerceBundle/Resources/config/routing/ecommerceconfig.yml"
+    prefix:   /config
+
+ecommerce_ecommerce_order:
+    resource: "@EcommerceBundle/Resources/config/routing/order.yml"
+    prefix:   /order
+
+ecommerce_ecommerce_preorder:
+    resource: "@EcommerceBundle/Resources/config/routing/preorder.yml"
+    prefix:   /preorder
+
+ecommerce_ecommerce_category:
+    resource: "@EcommerceBundle/Resources/config/routing/category.yml"
+    prefix:   /category
+
+ecommerce_ecommerce_category_grouping:
+    resource: "@EcommerceBundle/Resources/config/routing/categorygrouping.yml"
+    prefix:   /category-grouping
+
+ecommerce_item:
+    resource: "@EcommerceBundle/Resources/config/routing/item.yml"
+    prefix:   /item
+
+ecommerce_brand_product:
+    resource: "@EcommerceBundle/Resources/config/routing/brand.yml"
+    prefix:   /brand
+
+ecommerce_item_attribute:
+    resource: "@EcommerceBundle/Resources/config/routing/itemattribute.yml"
+    prefix:   /item-attribute
+
+ecommerce_dashboard:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Default:index" }
+
+ecommerce_item_delete:
+    path:     /item-delete
+    defaults: { _controller: "EcommerceBundle:Default:itemDelete" }
+
+ecommerce_allcategory_delete:
+    path:     /all-category-delete
+    defaults: { _controller: "EcommerceBundle:Default:categoryDelete" }
+

@@ -1,0 +1,30 @@
+customer_order:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Order:index" }
+
+customer_order_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:Order:show" }
+
+customer_order_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:Order:new" }
+
+customer_order_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:Order:create" }
+    methods:  POST
+
+customer_order_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Order:edit" }
+
+customer_order_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Order:update" }
+    methods:  [POST, PUT]
+
+customer_order_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:Order:delete" }
+    methods:  [POST, DELETE]

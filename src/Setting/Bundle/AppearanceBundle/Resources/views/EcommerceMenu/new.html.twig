@@ -1,0 +1,250 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    E-commerce Mega Menu
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('ecommercemenu') }}">Mega menu</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#"> E-commerce Mega Menu Components</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END sitecontent HEADER-->
+        <!-- BEGIN sitecontent CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="btn-group pull-right">
+
+                </div>
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i> E-commerce Mega Menu Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    Tools
+                                    <i class="icon-tasks"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="{{ path('ecommercemenu_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a></li>
+                                    <li><a href="{{ path('ecommercemenu') }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Title <span class="required">*</span></label>
+                                        <div class="controls">
+                                            <div class="input-icon left">
+                                                <i class="icon-font"></i>
+                                                {{ form_widget(form.name) }}
+                                                {{ form_errors(form.name) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Menu</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.menu) }}
+                                            {{ form_errors(form.menu) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span2">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Menu Position</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.menuPosition) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span2">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">&nbsp;</label>
+                                        <div class="controls">
+                                            Single Drop down
+                                            {{ form_widget(form.singleMenu) }}
+                                            {{ form_errors(form.singleMenu) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.childMenus.vars.id }}" class="control-label col-md-2">
+                                            Content Menu List:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.childMenus, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.categories.vars.id }}" class="control-label col-md-2">
+                                            Categories:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.categories, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.brands.vars.id }}" class="control-label col-md-2">
+                                            Brands:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.brands, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.promotions.vars.id }}" class="control-label col-md-2">
+                                            Promotions:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.promotions, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--/row-->
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.tags.vars.id }}" class="control-label col-md-2">
+                                            Tags:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.tags, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--/row-->
+
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.discounts.vars.id }}" class="control-label col-md-2">
+                                            Discounts:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.discounts, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="form-group">
+                                        <label for="{{ form.features.vars.id }}" class="control-label col-md-2">
+                                            Features:
+                                        </label>
+                                        <div class="col-md-9">
+                                            <div class="input-icon right">
+                                                <div class="controls">
+                                                    {{ form_widget(form.features, {'attr': {'class': 'form-control multi-select2 span6 m-wrap'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-center">
+                                    <button type="submit" class="btn green"><i class="icon-ok"></i> Save</button>
+                                    <button type="submit" class="btn purple"><i class="icon-refresh"></i> Reset</button>
+                                    {% if(entity.id > 0 ) %}
+                                        <a href="{{ path('sitecontent_delete',{'id': entity.id} ) }}"  class="btn red confirm" title="Are you sure went to delete?"><i class="icon-remove"></i> Delete</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block documentready %}
+
+    {{ parent() }}
+    $("select.multi-select2").multiSelect();
+
+{% endblock %}

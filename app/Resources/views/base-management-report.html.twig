@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon"  href="{{ asset('assets/img/favicon/favicon.ico') }}">
+    <link href="{{ asset('assets/plugins/font-awesome/css/font-awesome-4.7.0.min.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('assets/plugins/select2/select2_metro.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('assets/print/css/style.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('assets/print/css/menu.css') }}" type="text/css" rel="stylesheet"/>
+   <link href="{{ asset('assets/print/css/print.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('assets/print/css/css-loader.css') }}" type="text/css" rel="stylesheet"/>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+</head>
+<title>{{ app.user.globalOption.name }} | MIS Reports</title>
+<body class="body">
+<!-- START: RUBY DEMO HEADER -->
+<div class="ruby-menu-demo-header ruby-menu-demo-color-2 ">
+    {% set apps = app.user.globalOption.siteSetting.appModules %}
+    <!-- ########################### -->
+    <!-- START: RUBY HORIZONTAL MENU -->
+    <div class="ruby-wrapper">
+        <button class="c-hamburger c-hamburger--htx visible-xs">
+            <span>toggle menu</span>
+        </button>
+        <ul class="ruby-menu">
+            <li class="ruby-active-menu-item"><a href="/backend"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+            <li class="ruby-menu-item"><a href="{{ path('report_management_dashboard') }}">Dashboard</a></li>
+            {% for app in apps %}
+                {% if app.moduleClass == "Inventory" %}
+                    <li class="ruby-menu-mega"><a href="#">Inventory</a>
+                        <div class="ruby-grid ruby-grid-lined">
+                            <div class="ruby-row">
+                                <div class="ruby-col-4">
+                                    <h3 class="ruby-list-heading">Sales Reports</h3>
+                                    <div class="ruby-row">
+                                        <div class="ruby-col-6 ruby-col-6-md">
+                                            <ul>
+                                                {#<li><a href="{{ path('inv_system_overview') }}"><i class="fa fa-arrow-right" aria-hidden="true"></i> Dashboard</a></li>#}
+                                                <li><a href="{{ path('report_management_customer_dashboard') }}"><i class="fa fa-arrow-right" aria-hidden="true"></i> Customers</a></li>
+                                                <li><a href="{{ path('report_management_customer_sales') }}"><i class="fa fa-arrow-right" aria-hidden="true"></i> Sales Details</a></li>
+                                                <li><a href="{{ path('report_management_stock') }}"><i class="fa fa-arrow-right" aria-hidden="true"></i> Stock</a></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <span class="ruby-dropdown-toggle"></span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            <li class="ruby-menu-right">
+                <a class='btn-print print'><i class='fa fa-print'></i> Print</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END: RUBY DEMO HEADER -->
+<div id="pdf-area">
+    {% block body %}{% endblock %}
+</div>
+{% javascripts
+'assets/plugins/jquery-1.10.2.min.js'
+'assets/plugins/jquery-migrate-1.2.1.min.js'
+'assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js'
+'assets/plugins/jquery-ui/jquery.ui.droppable.js'
+'assets/plugins/jquery-ui/jquery.ui.autocomplete.js'
+'assets/plugins/jquery-ui/jquery.ui.menu.min.js'
+'assets/plugins/jquery-ui/jquery.ui.position.min.js'
+'assets/plugins/jquery-ui/jquery.ui.widget.min.js'
+'assets/plugins/select2/select2.min.js'
+'assets/plugins/jquery-ui/jquery.ui.autocomplete.js'
+'assets/js/process.js'
+'assets/scripts/app.js'
+'assets/print/js/kinzi.print.min.js'
+'assets/plugins/table-excel/table-to-excel.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% block javascriptBlock %}
+{% endblock %}
+<script>
+    $('.print').click(function () {
+        $('#print-area').kinziPrint({
+            importCSS: true,
+           // header: $('.print-header-content').html(),
+           // footer: $('.print-footer-content').html()
+        });
+    });
+    function goBack() {
+        window.history.back();
+    }
+    jQuery(document).ready(function () {
+        {% block documentready %}
+        $('.select2').select2();
+        $(document).on('click', '.ajax-btn', function() {
+            $.ajax({
+                url         : $('form#searchForm').attr( 'action' ),
+                type        : $('form#searchForm').attr( 'method' ),
+                data        : new FormData($('form#searchForm')[0]),
+                processData : false,
+                contentType : false,
+                beforeSend: function(){
+                    $('.loader-double').fadeIn(1000).addClass('is-active');
+                },
+                complete: function(){
+                    $('.loader-double').fadeIn(1000).removeClass('is-active');
+                },
+                success: function(response){
+                   // console.log(response);
+                    $('#data-load').html(response);
+                }
+            });
+        });
+
+        $(document).on("change", ".accountHead", function(event) {
+            account = $(this).val();
+            $.get( Routing.generate('account_sub_account_select',{ id:account}))
+                .done(function( data ) {
+                    $('.subAccountHead').html(data);
+                });
+        });
+        {% endblock %}
+    });
+</script>
+<style>
+    .margin-bottom-5 {
+        margin-left: 30px!important;
+    }
+    .margin-bottom-5 label {
+        font-size: 12px;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .margin-bottom-5 input[type="datetime-local"].m-wrap , .margin-top input[type="datetime-local"].m-wrap{
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pagination li a {
+        color: #333;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 6px 12px;
+        margin: 0 3px;
+    }
+
+    .pagination li a:hover {
+        background-color: #f5f5f5;
+    }
+
+    .page-link:focus {
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        outline: none;
+    }
+
+    .pagination li.active{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .pagination li.active span{
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 8px;
+        padding-bottom: 7px;
+    }
+
+</style>
+</body>
+</html>

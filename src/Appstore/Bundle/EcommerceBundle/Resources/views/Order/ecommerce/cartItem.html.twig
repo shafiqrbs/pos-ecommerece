@@ -1,0 +1,96 @@
+{% for orderItem in entity.orderItems %}
+    <tr id="remove-{{ orderItem.id }}">
+        <input type="hidden" name="itemId[]" value="{{ orderItem.id }}">
+        <td>{{ loop.index }}.</td>
+        <td class="numeric" >{{ orderItem.itemName }}</td>
+        <td class="numeric" >{{ orderItem.brandName }}</td>
+        <td class="numeric" >{{ orderItem.categoryName }}</td>
+        <td class="numeric" >
+            {% if entity.process == 'created' and orderItem.status == 0  %}
+                <div class="input-append">
+                    <span class="input-group-btn">
+                <input type="text"  name="quantity" id="quantity-{{ orderItem.id }}" class="form-control m-wrap-custom  span4 input-number" value="{{ orderItem.quantity }}" min="1" max="1000" >
+                    {% if orderItem.UnitName is not empty %}
+                    <button type="button" class="btn mini yellow">
+                             {{ orderItem.UnitName }}
+                          </button>
+                    </span>
+                    {% endif %}
+                </div>
+            {% else %}
+                {{ orderItem.quantity }}
+            {% endif %}
+        </td>
+        <td class="numeric" >{{ orderItem.price }}</td>
+        <td class="numeric" >=&nbsp;{{ orderItem.subTotal }}</td>
+        <td class="numeric" >
+            {% if orderItem.status == 1 %}
+                <a class="btn  mini green" ><i class=" icon-thumbs-up"></i> Accept</a>
+            {% elseif orderItem.status == 2 %}
+                <a class="btn  mini yellow " ><i class="icon-thumbs-down"></i> Rejected</a>
+            {% endif %}
+            {% if entity.process == 'created'  %}
+            <div class="btn-group">
+                <a data-id="{{ orderItem.id }}" data-url="{{ path('customer_medicine_item_update',{'order':entity.id,'id':orderItem.id}) }}" data-value="{{ globalOption.slug }}" class="btn blue mini orderItemProcess" ><i class="icon-save"></i></a>
+                <a  data-id="{{ orderItem.id }}" data-url="{{ path('customer_medicine_item_delete',{'order':entity.id,'id':orderItem.id}) }}" data-value="{{ globalOption.slug }}" class="btn mini red item-remove" ><i class="icon-trash"></i></a>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right">Total</span></td>
+    <td class="numeric" colspan="1" >=&nbsp;{{ entity.totalAmount|number_format }}</td>
+    <td></td>
+</tr>
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right">Delivery Charge</span></td>
+    <td class="numeric"><input type="text" name="ecommerce_payment[shippingCharge]" id="shippingCharge" class="m-wrap-custom span11 transactionProcess" value="{{ entity.shippingCharge }}"></td>
+    <td></td>
+</tr>
+
+{% if entity.ecommerceConfig.vatEnable == 1 %}
+    <tr>
+        <td class="numeric" colspan="6" ><span class="pull-right">Vat & Tax</span></td>
+        <td class="numeric">=&nbsp;{{ entity.vat }}</td>
+        <td></td>
+    </tr>
+{% endif %}
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right">Discount</span></td>
+    <td class="numeric"><input type="text" name="ecommerce_payment[discountAmount]" id="discountAmount" class="m-wrap-custom span11 transactionProcess" value="{{ entity.discountAmount }}"></td>
+    <td></td>
+</tr>
+
+{% if entity.coupon is not empty %}
+    <tr>
+        <td class="numeric" colspan="6" ><span class="pull-right">Coupon Code({{ entity.coupon.couponCode }})</span></td>
+        <td class="numeric">=&nbsp;{{ entity.couponAmount }}</td>
+        <td></td>
+    </tr>
+{% endif %}
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right">Grand Total</span></td>
+    <td class="numeric"><strong>=&nbsp;{{ ( entity.grandTotalAmount)|number_format }}</strong></td>
+    <td></td>
+</tr>
+<tr>
+    <td class="numeric" colspan="6" ><span class="pull-right">Paid Amount</span></td>
+    <td class="numeric"><strong>=&nbsp;{{ ( entity.paidAmount)|number_format }}</strong></td>
+    <td></td>
+</tr>
+
+{% if entity.dueAmount  > 0 %}
+    <tr>
+        <td class="numeric" colspan="6" ><span class="pull-right">Due Amount</span></td>
+        <td class="numeric" >=&nbsp;{{ ( entity.dueAmount)|number_format }}</td>
+        <td></td>
+    </tr>
+{% endif %}
+{% if entity.returnAmount  > 0 %}
+    <tr>
+        <td class="numeric" colspan="6" ><span class="pull-right">Return Amount</span></td>
+        <td class="numeric">=&nbsp;{{ ( entity.returnAmount)|number_format }}</td>
+        <td></td>
+    </tr>
+{% endif %}

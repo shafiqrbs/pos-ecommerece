@@ -1,0 +1,121 @@
+<style>
+    .grid-item-custom{
+        min-height: 80px;
+        padding-left: 15px;
+    }
+    .grid-item-custom .label-title{
+        font-size: 18px;
+        color: #000033;
+    }
+    .grid-item-custom .label-value{
+        font-size: 16px;
+        color:#f0360a;
+        font-weight: bold;
+    }
+</style>
+<table class="table even" border="1" id="downloadExcel">
+    <tr>
+        <td>
+            <div class="grid-container-4">
+                <div class="grid-item grid-item-custom">
+                    <label class="label-title">{{ customer.name }}</label><br/>
+                    <label>{{ customer.employeeId }}</label><br/>
+                    <label>{{ customer.line }},{{ customer.department }},{{ customer.profession }}</label><br/>
+                    <label>{{ customer.section }},{{ customer.unit }},{{ customer.category }}</label>
+                </div>
+                <div class="grid-item grid-item-custom">
+                    <br/>
+                    <div class="col-md-6">
+                        <label class="label-title">Lifetime Order</label><br/>
+                        <label class="label-value">{{ lifeTimeOrder|number_format(2) }}</label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-title">Order Value</label><br/>
+                        <label class="label-value">{{ overview.sales|number_format(2) }}</label>
+                    </div>
+                </div>
+                <div class="grid-item grid-item-custom">
+                    <br/>
+                    <div class="col-md-6">
+                        <label class="label-title">Credit Limit</label><br/>
+                        <label class="label-value">{{ customer.creditLimit|number_format(2) }}</label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-title">Credit Left</label><br/>
+                        <label class="label-value">{{ (customer.creditLimit - overview.balance)|number_format(2) }}</label>
+                    </div>
+                </div>
+                <div class="grid-item grid-item-custom">
+                    <br/>
+                    <label class="label-title">Total Due</label><br/>
+                    <label class="label-value">{{ overview.balance|number_format(2) }}</label>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr style="border-bottom: 2px solid #0a79df">
+        <td style="border-bottom: 2px solid #0a79df">
+        <div class="col-md-4">Invoice Information</div>
+        <div class="col-md-8">
+            <table class="table even">
+                <thead>
+                <tr style="height: 30px"><td class="name">Name</td><td class="td-value">Quantity</td><td class="td-value">MRP</td><td class="td-value">Dis</td><td class="td-value">SubTotal</td></tr>
+                </thead>
+            </table>
+        </div>
+        </td>
+    </tr>
+
+    {% if entities is not empty %}
+    {% for entity in entities %}
+    <tr style="border-bottom: 2px solid #0a79df">
+        <td style="border-bottom: 2px solid #0a79df">
+            <div class="col-md-4 invoice-info">
+                <label class="label-title">{{ entity.sales.invoice }}</label>
+                <label class="label-value">{{ entity.updated|date('d-m-Y h:i A') }}</label>
+                <label class="label-value">{{ (entity.sales) ? entity.sales.salesMode : '' }}</label>
+                <label class="label-value">Created By{{ entity.sales.createdBy }}</label>
+                <label class="label-value">Closed By{{ entity.sales.approvedBy }}</label>
+            </div>
+            <div class="col-md-8">
+                <table class="table even">
+                {% if  entity.sales  %}
+                    {% if entity.sales is not empty %}
+                        {% for item in  entity.sales.salesItems  %}
+                            <tr><td class="name">{{ item.item.name }}</td><td class="td-value">{{ item.quantity }}</td><td class="td-value">{{ item.mrp }}</td><td class="td-value">{{ item.discountPrice }}</td><td class="td-value">{{ item.subTotal }}</td></tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+                </table>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+<style>
+    .table tr td.name{
+        width: 40%!important;
+    }
+    .table tr td.td-value{
+        width: 15%!important;
+        text-align: center;
+    }
+
+    .invoice-info{
+        background: #ddd;
+        padding-left: 15px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    .label-title{
+        width: 100%;
+        font-size: 14px;
+        display: inline-block;
+    }
+    .label-value{
+        font-size: 12px;
+        width: 100%;
+        display: inline-block;
+    }
+</style>

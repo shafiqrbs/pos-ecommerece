@@ -1,0 +1,38 @@
+ecommerce_promotion:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Promotion:index" }
+
+ecommerce_promotion_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:Promotion:create" }
+    methods:  POST
+
+ecommerce_promotion_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Promotion:update" }
+    methods:  [GET, PUT]
+
+ecommerce_promotion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Promotion:edit" }
+
+ecommerce_promotion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:Promotion:delete" }
+
+ecommerce_promotion_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:Promotion:status" }
+
+
+ecommerce_promotion_search:
+    path:     /search
+    defaults: { _controller: "EcommerceBundle:Promotion:autoSearch" }
+    options:
+            expose: true
+
+ecommerce_promotion_name:
+    path:      /{size}/size-name
+    defaults: { _controller: "EcommerceBundle:Promotion:searchItemSizeName" }
+    options:
+            expose: true

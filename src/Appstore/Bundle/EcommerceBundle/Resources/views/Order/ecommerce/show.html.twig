@@ -1,0 +1,213 @@
+<div class="portlet box green">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Order Information</div>
+    </div>
+    <style>
+        ul.unstyled [class*="span"]{
+            min-height: 20px!important;
+        }
+    </style>
+    <div class="portlet-body form">
+        <div class="">
+            <div class="row-fluid">
+                <div class="span4">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <label><strong>Customer Overview</strong></label>
+                            <ul class="unstyled" >
+                                <li><strong class="span4">Invoice</strong><span class="span8">{{ entity.invoice }}</span></li>
+                                <li><strong class="span4">Name</strong><span class="span8">{{ entity.customerName }}</span></li>
+                                <li><strong class="span4">Mobile</strong><span class="span8">{{ entity.customerMobile }}</span></li>
+                                <li><strong class="span4">Address</strong><span class="span8">{{ entity.address }}</span></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <label><strong>Process Details</strong></label>
+                            <ul class="unstyled" >
+                                {% if entity.cashOnDelivery == 1 %}
+                                    <li><strong>Payment Method</strong>:&nbsp;Cash On Delivery</li>
+                                {% endif %}
+                                <li><strong class="span4">Shipping Method</strong><span class="span8">{{ entity.delivery|capitalize }}</span></li>
+                                <li><strong class="span4">Delivery Date</strong><span class="span8">{{ entity.deliveryDate|date('d-m-Y') }}</span></li>
+                                <li><strong class="span4">Delivery Slot</strong><span class="span8">{{ entity.deliverySlot }}</span></li>
+                                <li><strong class="span4">Process</strong><span class="span8">{{ entity.process|capitalize }}</span></li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="span4">
+                    {% if entity.courier is not empty %}
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <label><strong>Courier Information </strong></label>
+                                <ul class="unstyled" >
+                                    <li><strong>Courier</strong>:&nbsp;{{ entity.courier.name }}</li>
+                                    <li><strong>TrackingNo</strong>:&nbsp;{{ entity.trackingNo }}</li>
+                                    <li><strong>Address</strong>:&nbsp;{{ entity.courier.address }}</li>
+                                    <li><strong>Mobile</strong>:&nbsp;{{ entity.courier.address }}</li>
+                                </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body flip-scroll">
+            <table class="table table-bordered table-striped table-condensed flip-content ">
+                <thead class="flip-content ">
+                <tr class="head-grey">
+                    <th class="numeric" ><i class="icon-reorder"></i></th>
+                    <th class="numeric" >Item</th>
+                    <th class="numeric" >Brand</th>
+                    <th class="numeric" >Category</th>
+                    <th class="numeric" >Quantity</th>
+                    <th class="numeric" >Unit Price</th>
+                    <th class="numeric" >Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in entity.orderItems %}
+                    <tr id="remove-{{ item.id }}">
+                        <td class="numeric" >{{ loop.index }}</td>
+                        <td class="numeric" >{{ item.itemName }}</td>
+                        <td class="numeric" >{{ item.brandName }}</td>
+                        <td class="numeric" >{{ item.categoryName }}</td>
+                        <td class="numeric" >{{ item.quantity }}&nbsp;{{ item.unitName }}</td>
+                        <td class="numeric" >{{ item.price }}</td>
+                        <td class="numeric" >{{ item.subTotal }}</td>
+                    </tr>
+
+                {% endfor %}
+                <tr>
+                    <td class="numeric" colspan="6" ><span class="pull-right">Total</span></td>
+                    <td class="numeric" colspan="1" >=&nbsp;{{ entity.subTotal|number_format }}</td>
+                </tr>
+                <tr>
+                    <td class="numeric" colspan="6" ><span class="pull-right">Delivery Charge</span></td>
+                    <td class="numeric">=&nbsp;{{ entity.shippingCharge }}</td>
+
+                </tr>
+
+                {% if entity.ecommerceConfig.vatEnable == 1 %}
+                    <tr>
+                        <td class="numeric" colspan="6" ><span class="pull-right">Vat & Tax</span></td>
+                        <td class="numeric">=&nbsp;{{ entity.vat }}</td>
+                    </tr>
+                {% endif %}
+                {% if entity.discountAmount > 0 %}
+                    <tr>
+                        <td class="numeric" colspan="6" ><span class="pull-right">Discount Amount</span></td>
+                        <td class="numeric">=&nbsp;{{ ( entity.discountAmount)|number_format }}</td>
+                    </tr>
+                {% endif %}
+                {% if entity.coupon is not empty %}
+                    <tr>
+                        <td class="numeric" colspan="6" ><span class="pull-right">Coupon Code({{ entity.coupon.couponCode }})</span></td>
+                        <td class="numeric">=&nbsp;{{ entity.couponAmount }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td class="numeric" colspan="6" ><span class="pull-right">Grand Total</span></td>
+                    <td class="numeric"><strong>=&nbsp;{{ ( entity.total)|number_format }}</strong></td>
+                </tr>
+                <tr>
+                    <td class="numeric" colspan="6" ><span class="pull-right">Paid Amount</span></td>
+                    <td class="numeric"><strong>=&nbsp;{{ ( entity.paidAmount)|number_format }}</strong></td>
+                </tr>
+                {% if entity.dueAmount  > 0 %}
+                    <tr>
+                        <td class="numeric" colspan="6" ><span class="pull-right">Due Amount</span></td>
+                        <td class="numeric" >=&nbsp;{{ ( entity.dueAmount)|number_format }}</td>
+                    </tr>
+                {% endif %}
+                {% if entity.returnAmount  > 0 %}
+                    <tr>
+                        <td class="numeric" colspan="6" ><span class="pull-right">Return Amount</span></td>
+                        <td class="numeric">=&nbsp;{{ ( entity.returnAmount)|number_format }}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="clearfix"><br/></div>
+        <div class="form-actions portlet box blue">
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>Payment Information</div>
+            </div>
+        </div>
+        <div class="clearfix"><br/></div>
+        <table class="table table-bordered table-striped table-condensed flip-content ">
+            <thead class="flip-content ">
+            <tr class="head-green">
+                <th class="numeric" >Date</th>
+                <th class="numeric" >Transaction Type</th>
+                <th class="numeric" >Payment Mobile</th>
+                <th class="numeric" >Transaction ID</th>
+                <th class="numeric" >Receive Mobile</th>
+                <th class="numeric" >Receive Amount</th>
+                <th class="numeric" >Return Amount</th>
+                <th class="numeric" >Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for payment in entity.orderPayments %}
+                <tr id="remove-{{ payment.id }}">
+                    <td>{{ payment.updated|date('d-m-Y') }}</td>
+                    <td class="numeric" >{{ payment.transactionType }}</td>
+                    <td class="numeric" >{{ payment.mobileAccount }}</td>
+                    <td class="numeric" >{{ payment.transaction }}</td>
+                    <td class="numeric" >{{ payment.accountMobileBank.name }}</td>
+                    <td class="numeric" >{% if payment.transactionType =='Receive' %}{{ payment.amount|number_format }}{% endif %}</td>
+                    <td class="numeric" >{% if payment.transactionType =='Return' %}{{ payment.amount|number_format }}{% endif %}</td>
+                    <td class="numeric" >
+                        {% if payment.status == 1  %}
+                            <a class="btn  mini green" data-url="" ><i class=" icon-thumbs-up"></i> Accept</a>
+                        {% elseif payment.status == 2 %}
+                            <a class="btn  mini red" data-url="" ><i class=" icon-thumbs-down"></i> Reject</a>
+                        {% else %}
+                            <a class="btn  mini yellow" data-url="" ><i class=" icon-refresh"></i> Waiting</a>
+                        {% endif %}
+                        {% set postCondition = {'wfc': 'wfc' ,'created':'created'} %}
+                        {% if entity.process in  postCondition|keys %}
+                            <a class="btn  mini red remove" data-url="{{ path('order_payment_delete',{'shop':globalOption.slug,'id':payment.id}) }}"  data-id="{{ payment.id }}" ><i class=" icon-trash"></i> Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="8"><br/></td>
+            </tr>
+            <tr>
+                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Grand Total </strong></span></td>
+                <td class="numeric" >=&nbsp;{{ entity.total|number_format }}</td>
+                <td class="numeric" ></td>
+            </tr>
+            <tr>
+                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Total Receive</strong></span></td>
+                <td class="numeric" >=&nbsp;{{ entity.paidAmount|number_format }}</td>
+                <td class="numeric" ></td>
+            </tr>
+
+            <tr>
+                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Due Amount</strong></span></td>
+                <td class="numeric" >=&nbsp;{{ entity.dueAmount|number_format }}</td>
+                <td class="numeric" ></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="clearfix"> </div>
+        <!--/span-->
+
+
+    </div>
+</div>

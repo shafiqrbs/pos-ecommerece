@@ -1,0 +1,19 @@
+template_ecommerce_edit:
+    path:     /ecommerce-edit
+    defaults: { _controller: "EcommerceBundle:TemplateCustomize:ecommerceEdit" }
+
+template_reset:
+    path:     /{id}/reset
+    defaults: { _controller: "EcommerceBundle:TemplateCustomize:reset" }
+
+template_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:TemplateCustomize:update" }
+    methods:  [POST, PUT]
+
+template_ecommerce_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:TemplateCustomize:ecommerceUpdate" }
+    methods:  [POST, PUT]
+
+

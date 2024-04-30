@@ -1,0 +1,49 @@
+{% for subItem in entity.itemSubs  %}
+    <tr id="removeProduct-{{ subItem.id }}">
+        <td class="numeric" >{{ loop.index }}</td>
+        <td class="numeric" >
+            {% if  subItem.masterItem == 0 %}
+                <a  data-type="select" class="editable" id="size" data-name="Size" href="#" data-source="{{ path('ecommerce_item_inline_size') }}"  data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ entity.id }}" data-value="{% if subItem.size is defined and subItem.size is not empty %}{{ subItem.size.id }}{% endif %}" data-original-title="Enter Size name">{% if subItem.size is defined and subItem.size is not empty %}{{ subItem.size.name }}{% endif %}</a>
+            {% else %}
+                {% if subItem.size is not empty %}
+                    {{ subItem.size.name }}
+                {% endif %}
+            {% endif %}
+        </td>
+        <td class="numeric" >
+            {% if  subItem.masterItem == 0 %}
+                <a  data-type="select" class="editable" id="productUnit" data-name="ProductUnit" href="#" data-source="{{ path('ecommerce_item_inline_unit') }}"  data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ entity.id }}" data-value="{% if subItem.productUnit is defined and subItem.productUnit is not empty %}{{ subItem.productUnit.id }}{% endif %}" data-original-title="Enter Unit name">{% if subItem.productUnit is defined and subItem.productUnit is not empty %}{{ subItem.productUnit.name }}{% endif %}</a>
+            {% else %}
+                {% if subItem.productUnit is not empty %}
+                    {{ subItem.productUnit.name }}
+                {% endif %}
+            {% endif %}
+        </td>
+        <td class="numeric" >{% if subItem.colors is not empty %}{% for color in subItem.colors %}{{ color.name }} {% if not loop.last %},{% endif %}{% endfor %}{% endif %}</td>
+        <td class="numeric" >
+            {% if  subItem.masterItem == 0 %}
+            <a  data-type="text" class="editable" id="{{ subItem.id }}" data-name="quantity" href="#"   data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ subItem.id }}" data-value="{{ subItem.quantity }}" data-original-title="Enter change quantity">{{ subItem.quantity }}</a></td>
+        {% else %}
+            {{ subItem.quantity }}
+        {% endif %}
+        <td class="numeric" >{{ subItem.purchasePrice|number_format() }}</td>
+        <td class="numeric" >
+            {% if  subItem.masterItem == 0 %}
+                <a  data-type="text" class="editable" id="{{ subItem.id }}" data-name="SalesPrice" href="#"   data-url="{{ path('ecommerce_item_inline_subitem_update') }}" data-pk="{{ subItem.id }}" data-value="{{ subItem.salesPrice }}" data-original-title="Enter sales price">{{ subItem.salesPrice }}</a>
+            {% else %}
+                {{ subItem.salesPrice }}
+            {% endif %}
+        </td>
+        <td class="numeric" >{{ subItem.discountPrice }}</td>
+        <td class="numeric" >
+            {% if  subItem.masterItem == 0 %}
+                <input type="checkbox" data-url="{{ path('ecommerce_subitem_status',{'id':subItem.id}) }}" name="status" class="isApplicable" {% if subItem.status == 1 %} checked="checked" {% endif %} value="{{ subItem.status }}">
+            {% endif %}
+        </td>
+        <td>
+            {% if  subItem.masterItem == 0 %}
+                <a class="btn red removeProduct mini" data-id="{{ subItem.id }}" data-url="{{ path('ecommerce_item_subItem_delete',{'id':subItem.id}) }}"><i class="icon-trash"></i> Delete</a>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}

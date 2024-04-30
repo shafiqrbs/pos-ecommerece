@@ -1,0 +1,123 @@
+ecommerce_customer:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:Customer:index" }
+
+ecommerce_association_member:
+    path:     /association-member
+    defaults: { _controller: "EcommerceBundle:Customer:member" }
+
+ecommerce_association_member_show:
+    path:     /{id}/association-member-show
+    defaults: { _controller: "EcommerceBundle:Customer:memberShow" }
+
+ecommerce_customer_sms:
+    path:     /sms
+    defaults: { _controller: "EcommerceBundle:Customer:index" }
+
+ecommerce_customer_email:
+    path:     /email
+    defaults: { _controller: "EcommerceBundle:Customer:index" }
+
+ecommerce_customer_online:
+    path:     /online
+    defaults: { _controller: "EcommerceBundle:Customer:index" }
+
+ecommerce_customer_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:Customer:show" }
+
+ecommerce_customer_rehab_show:
+    path:     /{id}/rehab-show
+    defaults: { _controller: "EcommerceBundle:Customer:rehab" }
+
+ecommerce_customer_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:Customer:new" }
+
+ecommerce_customer_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:Customer:create" }
+    methods:  POST
+
+ecommerce_customer_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:Customer:edit" }
+
+ecommerce_customer_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:Customer:update" }
+    methods:  [POST, PUT]
+
+ecommerce_customer_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:Customer:delete" }
+    options:
+           expose: true
+
+ecommerce_customer_search:
+    path:     /customer-search
+    defaults: { _controller: "EcommerceBundle:Customer:autoSearch" }
+    options:
+            expose: true
+
+ecommerce_patient_search:
+    path:     /patient-search
+    defaults: { _controller: "EcommerceBundle:Customer:patientSearch" }
+    options:
+            expose: true
+
+ecommerce_patient_information:
+    path:     /{id}/patient-information
+    defaults: { _controller: "EcommerceBundle:Customer:patientInfo" }
+    options:
+        expose: true
+
+ecommerce_customer_name:
+    path:      /{customer}/customer-name
+    defaults: { _controller: "EcommerceBundle:Customer:searchCustomerName" }
+    options:
+           expose: true
+
+ecommerce_customer_code_search:
+    path:     /customer-code-search
+    defaults: { _controller: "EcommerceBundle:Customer:autoCodeSearch" }
+    options:
+            expose: true
+
+ecommerce_customer_code:
+    path:      /{customer}/customer-code
+    defaults: { _controller: "EcommerceBundle:Customer:searchCode" }
+    options:
+           expose: true
+
+ecommerce_location_search:
+    path:     /location-search
+    defaults: { _controller: "EcommerceBundle:Customer:autoLocationSearch" }
+    options:
+            expose: true
+
+ecommerce_location_name:
+    path:      /{location}/location-name
+    defaults: { _controller: "EcommerceBundle:Customer:searchLocationName" }
+    options:
+           expose: true
+
+ecommerce_customer_auto_name_search:
+    path:     /customer-auto-name-search
+    defaults: { _controller: "EcommerceBundle:Customer:searchAutoCompleteName" }
+    options:
+           expose: true
+
+ecommerce_customer_ledger:
+    path:     /customer-ledger
+    defaults: { _controller: "AccountingBundle:AccountSales:getCustomerLedger" }
+    options:
+           expose: true
+
+ecommerce_customer_sales_ledger:
+    path:     /customer-sales-ledger
+    defaults: { _controller: "AccountingBundle:AccountSales:getCustomerSalesLedger" }
+    options:
+           expose: true
+
+

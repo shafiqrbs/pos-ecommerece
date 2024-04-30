@@ -1,0 +1,89 @@
+<style>
+    p.search{
+        position: absolute;
+        z-index: 999;
+        top: 0px;
+    }
+</style>
+<table class="table table-bordered table-striped table-condensed flip-content" id="dataTableSearch">
+    <thead class="flip-content ">
+    <tr class="head-red">
+        <th class="span1 pull-center">S/N</th>
+        <th class="span2">Barcode</th>
+        <th class="span3">Item Name</th>
+        <th class="span1">Qty</th>
+        <th class="span1">Unit</th>
+        <th class="span1">Price</th>
+        <th class="span1">Discount Price</th>
+        <th class="span2">&nbsp;</th>
+    </tr>
+    </thead>
+    <style>
+        tr.disabled {
+            background-color: #f0c9c9!important;
+            border-bottom: 1px solid #ed7777 !important;
+        }
+        .table-striped tbody>tr.disabled:nth-child(even)>td, .table-striped tbody>tr.disabled:nth-child(even)>th {
+            background-color: #f0c9c9!important;
+            border-bottom: 1px solid #ed7777 !important;
+        }
+        .table-striped tbody>tr.disabled:nth-child(odd)>td, .table-striped tbody>tr.disabled:nth-child(odd)>th {
+            background-color: #f0c9c9!important;
+            border-bottom: 1px solid #ed7777 !important;
+        }
+    </style>
+    <tbody>
+    {% for product in entities %}
+        <tr class="{{ product.quantity  > 0 ? '':'disabled' }}">
+            <td class="pull-center">{{ loop.index }}.</td>
+            <td>{{ product.unit_id }}</td>
+            <td><span style="font-size:14px">{{ product.name }}</span><br/>{{ product.nameBn }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.unit }}</td>
+            <td>{{ product.salesPrice }}
+            <td>{{ product.discountPrice }}
+                <input type="hidden" class="form-control inline-medium-wrap btn-qnt-particular tooltips" data-trigger = 'hover' data-original-title='{{ product.salesPrice }}'  data-id="{{ product.item_id }}"  id="price-{{ product.item_id }}" required="required" name="price-{{ product.item_id }}" value="{{ product.salesPrice }}" data-title="{{ product.salesPrice }}" placeholder="{{ product.salesPrice }}">
+            </td>
+            <td>
+                <div class="input-append" >
+                  <span class="input-group-btn">
+                  <a href="javascript:"  class="btn blue btn-number-cart" data-type="minus" data-id="{{ product.item_id }}"  data-text="{{ product.item_id }}" data-title="{{ product.salesPrice }}" min="1"  data-field="quantity"> <span class="fa fa-minus"></span> </a>
+                  <input type="text" class="form-control inline-medium-wrap btn-qnt-particular tooltips" data-trigger = 'hover' data-original-title='{{ product.quantity }}'  data-id="{{ product.item_id }}"  id="quantity-{{ product.item_id }}" required="required" name="quantity-{{ product.item_id }}" max="{{ product.quantity }}" {{ product.quantity  > 0 ? '':'disabled' }} value="0" data-title="{{ product.salesPrice }}" placeholder="{{ product.quantity }}"  min="1" >
+                  <a href="javascript:"  class="btn blue btn-number-cart"  data-type="plus" data-id="{{ product.item_id }}" data-title="{{ product.salesPrice }}"  data-text="{{ product.item_id }}" data-field="quantity"> <span class="fa fa-plus"></span></a>
+                    <a href="javascript:" data-action="{{ path('pos_item_add',{'product':product.item_id}) }}" class="btn yellow addToCart" {{ product.quantity  > 0 ? '':'disabled' }}  data-id="{{ product.item_id }}" data-title="{{ product.salesPrice }}" max="{{ product.quantity }}"  data-text="{{ product.item_id }}" > <span class="fa fa-shopping-basket"></span></a>
+                    </span>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<style>
+    .cart-selected {
+        background: #c3d6e8;
+    }
+    tr.cart-selected td{
+        background:#c3d6e8!important;
+    }
+    .table th, .table td {
+        font-weight: bold;
+    }
+    select.m-wrap {
+        margin-bottom: 0px!important;
+    }
+    .purchase-item-box{
+        background: #bab5b5; padding:7px; display: grid
+    }
+    .serial{
+        display: none;
+    }
+    .selected-serial{
+        display: block;
+    }
+    .multiselect-container>li>a>label {
+        padding: 3px 20px 3px 10px!important;
+    }
+    .multiselect-container>li>a>label input[type="checkbox"] {
+        margin: 9px 9px 9px;
+    }
+</style>

@@ -1,0 +1,256 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- END PAGE HEADER-->
+        <div class="portlet-body">
+            <div class="row-fluid" >
+                <div class="span1">
+                    {% if globalOption.inventoryConfig.invoicePrintLogo == 1 %}
+                        {% if globalOption.inventoryConfig.webPath is not empty %}   <img style="max-width: 180px; max-height: 60px" src="{{ image(globalOption.inventoryConfig.webPath).resize(180,60) }}">{% endif %}
+                    {% endif %}
+                </div>
+                <div class="span3">
+                   {# {% render controller("EcommerceBundle:Order:orderCountsByProcess") %}#}
+                </div>
+                <div class="span4">
+                    <div class="btn-group">
+                        {% if ( app.user.granted("ROLE_DOMAIN_INVENTORY_SALES") or  app.user.granted("ROLE_DOMAIN") ) %}
+                            {#<a class="btn blue big"  href="{{ path('inventory_salesonline_new') }}"><i class="icon-shopping-cart"></i> Add Sales</a>#}
+                            {% if globalOption.inventoryConfig.isPos == 1 and  app.user.granted("ROLE_POS") %}
+                            <a class="btn red big"  href="{{ path('pos_desktop') }}"><i class="icon-shopping-cart"></i> POS</a>
+                            {% endif %}
+                            {% if globalOption.inventoryConfig.isInvoice == 1  %}
+                            <a class="btn purple big"  href="{{ path('inventory_salesonline_new') }}"><i class="icon-file-alt"></i> New Invoice</a>
+                            {% endif %}
+                            {% if globalOption.inventoryConfig.androidSales == 1 and  app.user.granted("ROLE_POS_ANDROID")  %}
+                                <a class="btn green big"  href="{{ path('pos_android_sales') }}"><i class="icon-mobile-phone"></i> Android</a>
+                            {% endif %}
+                        {% endif %}
+                        {% if ( app.user.granted("ROLE_DOMAIN_ACCOUNTING_SALES") or  app.user.granted("ROLE_DOMAIN") ) %}
+                            <a href="{{ path('account_sales_new') }}"  class="btn yellow big"><i class="icon-money"></i> Receive</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="btn-group">
+                        {% if ( app.user.granted("ROLE_DOMAIN_INVENTORY_PURCHASE") or  app.user.granted("ROLE_DOMAIN") ) %}
+                            <a href="{{ path('inventory_purchasesimple_new') }}"  class="btn green big"><i class="icon-truck"></i> Add Purchase</a>
+                        {% endif %}
+                        {% if ( app.user.granted("ROLE_DOMAIN_ACCOUNTING_PURCHASE") or  app.user.granted("ROLE_DOMAIN") ) %}
+                            <a href="{{ path('account_purchase_new') }}"  class="btn yellow big"><i class="icon-money"></i> Payment</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"><br/></div>
+        <div class="row-fluid">
+            <div class="span8">
+                <div class="row-fluid">
+                    <div class="span6 responsive" data-tablet="span6" data-desktop="span3">
+                        <div class="dashboard-stat2 ">
+                            <div class="display">
+                                <div class="number">
+                                    <h3 class="font-green-sharp">
+                                        <span data-counter="counterup" data-value="">{{ ((transactionCashOverviews['openingBalance']+transactionCashOverviews['debit'])-transactionCashOverviews['credit'])|number_format(2) }}</span>
+                                        <small class="font-green-sharp">BDT</small>
+                                    </h3>
+                                    <small>BALANCE</small>
+                                </div>
+                                <div class="icon">
+                                    <i class="icon-bar-chart"></i>
+                                </div>
+                            </div>
+                            <div class="progress-info">
+                                <div class="progress">
+                            <span style="width: 75%;" class="progress-bar progress-bar-success green-sharp">
+                                <span class="sr-only">75% progress</span>
+                            </span>
+                                </div>
+                                <div class="status">
+                                    <div class="status-number">
+                                        {% if ( app.user.granted("ROLE_ACCOUNTING") or  app.user.granted("ROLE_DOMAIN") ) %}
+                                        <a href="{{ path('account_transaction_cash_overview') }}" class="btn green mini">More <i class="icon-circle-arrow-right"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6 responsive" data-tablet="span6" data-desktop="span3">
+                        <div class="dashboard-stat2 ">
+                            <div class="display">
+                                <div class="number" style="width: 100%">
+                                    <h3 class="font-blue-sharp">
+                                        <small class="font-blu-sharp">Order Status</small>
+                                    </h3>
+                                </div>
+                                <br/>
+                                <style>
+                                    .order-list{
+                                        list-style: decimal-leading-zero;
+                                        font-size: 14px;
+                                        text-transform: capitalize;
+                                    }
+                                    .order-list li{
+                                        line-height: 24px;
+                                    }
+
+                                </style>
+                                 {% render controller("EcommerceBundle:Order:orderCountsByProcess") %}
+                            </div>
+                            <div class="progress-info">
+                                <div class="status">
+                                    <div class="status-number">
+                                        <a href="{{ path('customer_order') }}" class="btn red mini">More Orders <i class="icon-circle-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row-fluid">
+                    <div class="span6 responsive" data-tablet="span6" data-desktop="span3">
+                        <div class="dashboard-stat2 ">
+                            <div class="display">
+                                <div class="number">
+                                    <h3 class="font-blue-sharp">
+                                        <span data-counter="counterup" data-value="{{ purchaseCashOverview['total']|round|number_format(2) }}">{{ purchaseCashOverview['total']|round|number_format(2) }}</span>
+                                        <small class="font-blu-sharp">BDT</small>
+                                    </h3>
+                                    <small>Purchase</small>
+                                </div>
+                                <div class="icon">
+                                    <i class="icon-shopping-cart"></i>
+                                </div>
+                            </div>
+                            <div class="progress-info">
+                                <div class="progress">
+                            <span style="width: 75%;" class="progress-bar progress-bar-success blue-sharp">
+                                <span class="sr-only">75% grow</span>
+                            </span>
+                                </div>
+                                <div class="status">
+                                    <div class="status-number">
+                                    {% if ( app.user.granted("ROLE_DOMAIN_INVENTORY_PURCHASE") or  app.user.granted("ROLE_DOMAIN") ) %}
+
+                                        <a href="{{ path('inventory_purchasesimple') }}" class="btn blue mini">More <i class="icon-circle-arrow-right"></i></a>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6 responsive" data-tablet="span6" data-desktop="span3">
+                        <div class="dashboard-stat2 ">
+                            <div class="display">
+                                <div class="number">
+                                    <h3 class="font-purple-soft">
+                                        <span data-counter="counterup" data-value="{{ salesCashOverview['total']|number_format(2)|in_words }}">{{ salesCashOverview['total']|number_format(2) }}</span>
+                                        <small class="font-purple-soft">BDT</small>
+                                    </h3>
+                                    <small>SALES</small>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-money"></i>
+                                </div>
+                            </div>
+                            <div class="progress-info">
+                                <div class="progress">
+                            <span style="width: 75%;" class="progress-bar progress-bar-success purple-soft">
+                                <span class="sr-only">75% change</span>
+                            </span>
+                                </div>
+                                <div class="status">
+                                    <div class="status-number">
+                                        {% if ( app.user.granted("ROLE_DOMAIN_INVENTORY_SALES") or  app.user.granted("ROLE_DOMAIN") ) %}
+                                        <a href="{{ path('inventory_salesonline') }}" class="btn purple mini">More <i class="icon-circle-arrow-right"></i></a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="span4">
+                <div class="span6" style="margin-top:-10px">
+                    <div class="portlet-body">
+                        {% if ( app.user.granted("ROLE_DOMAIN_INVENTORY_MANAGER") or  app.user.granted("ROLE_DOMAIN") ) %}
+
+                        <a href="{{ path('account_sales_outstanding') }}" class="icon-btn">
+                            <i class="fa fa-group"></i>
+                            <div> Customer </div>
+                        </a>
+                        <a href="{{ path('inventory_report_sales_overview') }}" class="icon-btn">
+                            <i class="icon-tags"></i>
+                            <div> Sales </div>
+                        </a>
+                        <a href="{{ path('account_purchase_outstanding') }}" class="icon-btn">
+                            <i class="fa fa-user"></i>
+                            <div> Vendor </div>
+                        </a>
+                        <a href="{{ path('inventory_report_purchase_overview') }}" class="icon-btn">
+                            <i class="icon-truck"></i>
+                            <div> Purchase </div>
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+                <div class="span6" style="margin-top:-10px">
+                    <div class="portlet-body">
+                        {% if ( app.user.granted("ROLE_DOMAIN_INVENTORY_MANAGER") or  app.user.granted("ROLE_DOMAIN") ) %}
+
+                        <a href="{{ path('inventory_item') }}" class="icon-btn">
+                            <i class="icon-bar-chart"></i>
+                            <div> Stock </div>
+                        </a>
+                        <a href="{{ path('inventory_purchaseitem') }}" class="icon-btn">
+                            <i class="icon-th"></i>
+                            <div> Purchase Item </div>
+                        </a>
+                        <a href="{{ path('inventory_stockitem_short_list') }}" class="icon-btn">
+                            <i class="icon-signal"></i>
+                            <div> Short List </div>
+                            {#<span class="badge badge-important">{{ shortMedicineCount }}</span>#}
+                        </a>
+                        <a href="{{ path('inventory_damage') }}" class="icon-btn">
+                            <i class=" icon-list-ol"></i>
+                            <div> Damage </div>
+                            {#<span class="badge badge-important">{{ expiryMedicineCount }}</span>#}
+                        </a>
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@InventoryBundle/Resources/public/css/dashboard.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    jqueryTemporaryLoad();
+    jqueryInstantTemporaryLoad();
+    $('#salesTemporaryItem_stockName').focus();
+
+{% endblock %}

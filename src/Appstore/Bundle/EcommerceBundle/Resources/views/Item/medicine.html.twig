@@ -1,0 +1,173 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    View Product Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('ecommerce_item_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create New</a>
+                                {% if app.user.granted("ROLE_DOMAIN") %}
+                                <a class="btn blue" id="priceUpdate" data-url="{{ path('ecommerce_item_price_update') }}"><i class="icon-money"></i>&nbsp; Price Update</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="category" name="category" class="span12 m-wrap select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}" autocomplete="off" placeholder="Enter product category name ">
+
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="brand" name="brand" class="span12 m-wrap select2Brand" value="{% if searchForm.brand is defined %}{{ searchForm.brand }}{% endif %}"  autocomplete="off" placeholder="Enter brand name">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="generic" name="generic" class="span12 m-wrap" value="{% if searchForm.generic is defined %}{{ searchForm.generic }}{% endif %}"  autocomplete="off" placeholder="Enter generic name">
+                                        </div>
+                                        <div class="span3">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <input type="text" id="name" name="name" class="span11 m-wrap" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}" autocomplete="off" placeholder="Enter item name ">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <th class="numeric" >FeatureBrand</th>
+                                    <th {% if pagination.isSorted('item.webName') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Name', 'item.webName') }}{% if( direction == 'desc' and sort == 'item.webName') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('item.category') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Category', 'item.category') }}{% if( direction == 'desc' and sort == 'item.category') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >FeatureCat</th>
+
+                                    <th class="numeric" >Purchase</th>
+                                    <th class="numeric" >Sales</th>
+                                    <th {% if pagination.isSorted('item.discount') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Discount', 'item.discount') }}{% if( direction == 'desc' and sort == 'item.discount') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('item.promotion') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Promotion', 'item.promotion') }}{% if( direction == 'desc' and sort == 'item.promotion') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Image</th>
+                                    <th {% if pagination.isSorted('item.status') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Status', 'item.status') }}{% if( direction == 'desc' and sort == 'item.status') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="purchaseentity" >
+                                {% for entity in pagination %}
+                                    <tr class="remove-{{ entity.id }}">
+                                        <td class="numeric" ><input type="checkbox" data-url="{{ path('ecommerce_item_checkbox_applicable',{'id':entity.id,'applicable':'IsFeatureBrand'}) }}" name="IsFeatureBrand" class="isApplicable" {% if entity.isFeatureBrand == 1 %} checked="checked" {% endif %} value="{{ entity.isFeatureBrand }}"></td>
+                                        <td><a  data-type="text" class="editable" id="{{ entity.id }}" data-name="WebName" href="#"   data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{{ entity.webName }}" data-original-title="Enter product name">{{ entity.webName }}</a></td>
+                                        <td class="numeric" >
+                                            <a  data-type="select" class="editable" id="Category" data-name="Category" href="#" data-source="{{ path('ecommerce_item_inline_category_search') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.category is defined and entity.tag is not empty %}{{ entity.id }}{% endif %}" data-original-title="Enter category name">{% if entity.category is defined and entity.category is not empty %}{{ entity.category.name }}{% endif %}</a>
+                                        </td>
+                                        <td class="numeric" ><input type="checkbox" data-url="{{ path('ecommerce_item_checkbox_applicable',{'id':entity.id,'applicable':'IsFeatureCategory'}) }}" name="IsFeatureCategory" class="isApplicable" {% if entity.isFeatureCategory == 1 %} checked="checked" {% endif %} value="{{ entity.isFeatureCategory }}"></td>
+
+                                        <td class="numeric" >{{ entity.purchasePrice }}</td>
+                                        <td class="numeric" >{% if entity.discount is not empty  %}<strike>{% endif %} <a  data-type="text" class="editable" id="{{ entity.id }}" data-name="SalesPrice" href="#"   data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{{ entity.salesPrice }}" data-original-title="Enter sales price">{{ entity.salesPrice }}</a>{% if entity.discount is not empty  %}</strike>{% endif %} {% if entity.discount is not empty  %}{{ entity.discountPrice|number_format() }}{% endif %}</td>
+                                        <td class="numeric" >
+                                            <a  data-type="select" class="editable" id="discount" data-name="Discount" href="#" data-source="{{ path('ecommerce_item_inline_discount_search') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.discount is not empty %}{{ entity.discount.id }}{% endif %}" data-original-title="Enter discount method">{% if entity.discount is not empty %}{{ entity.discount.name }}-({{ entity.discount.discountAmount }}) {% if  entity.discount.type == 'percentage' %}%{% endif %}{% endif %}</a>
+                                        </td>
+
+                                        <td class="numeric" >
+                                             <a  data-type="select" class="editable" id="promotion" data-name="Promotion" href="#" data-source="{{ path('ecommerce_item_inline_tag_search') }}"  data-url="{{ path('ecommerce_item_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.tag is defined and entity.tag is not empty %}{{ entity.id }}{% endif %}" data-original-title="Enter promotion name">{% if entity.promotion is defined and entity.promotion is not empty %}{{ entity.promotion.name }}{% endif %}</a>
+                                         </td>
+                                        <td class="numeric" >
+                                            {% if entity.webPath %}
+                                                <a class="btn mini blue"  href="{{ path('ecommerce_item_upload',{id:entity.id}) }}"  >Yes</a>
+                                            {% else %}
+                                                <a href="{{ path('ecommerce_item_upload',{id:entity.id}) }}" class="btn mini yellow">No</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >
+                                            {% if entity.status == 1 %}
+                                                <a href="{{ path('ecommerce_item_status', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-ok"></i>&nbsp;</a>
+                                            {% else %}
+                                                <a href="{{ path('ecommerce_item_status', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-remove"></i></a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >
+                                            <div class="actions">
+                                            <div class="btn-group">
+                                            <a href="{{ path('ecommerce_item_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i>&nbsp;</a>
+                                            <a href="{{ path('ecommerce_item_show',{'id':entity.id}) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                            {% if entity.status is empty %}
+                                                <a  data-url="{{ path('ecommerce_item_delete',{'id':entity.id}) }}" class="btn red mini remove" ><i class="icon-remove"></i></a>
+                                            {% endif %}
+                                            {% if entity.source == 'ecommerce' %}
+                                                <a href="javascript:" data-id="{{ entity.id }}"  data-url="{{ path('ecommerce_item_delete',{'id':entity.id}) }}" class="btn red mini remove" ><i class="icon-trash"></i></a>
+                                                <a target="_blank" href="{{ path('ecommerce_item_copy',{'id':entity.id}) }}" class="btn blue mini" ><i class="icon-copy"></i>&nbsp;Copy</a>
+                                            {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(pagination) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/editable.js'
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+{% endblock %}
+

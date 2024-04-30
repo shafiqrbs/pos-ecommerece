@@ -1,0 +1,105 @@
+{% extends '::base-report.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="print-bar">
+            <form name="searchForm" id="searchForm" action="{{ path('inv_customer_monthly_sales_ajax') }}" method="post">
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <label>Month</label>
+                        {% set months = {'01':'January','02':'February','03':'March','04':'April','05':'May','06':'June','07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'} %}
+                        <select class="search-input span12 m-wrap" name="month" id='month'>
+                            {% for key,month in months %}
+                                <option value='{{ key }}' {% if (startMonth is defined and  startMonth == key) or (month == currentMonth) %} selected="selected" {% endif %} >{{ month }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="grid-item">
+                        <div class="col-md-12">
+                            <label>Year</label>
+                            {% set years = [2023,2024,2025] %}
+                            <select class="search-input span12 m-wrap" id="year" name="year">
+                                <option value="">--Select Year--</option>
+                                {% for year in years %}
+                                    <option value='{{ year }}' {% if (searchForm.year is defined and searchForm.year == year) or (year == currentYear) %} selected="selected" {% endif %} >{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="col-md-12 margin-top-15" >
+                            <button type="button" class='btn btn-download btn-margin-left ajax-btn' value="search" name="submit" ><i class='fa fa-search'></i></button>
+                            <button class="btn purple" onclick="exportExcel()" type="button"><i class="fa fa-file"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="loader loader-double" ></div>
+    <div id="print-area">
+        <div class="col-md-12" id="data-load">
+            <table class="table even" border="1" id="downloadExcel">
+                <caption><h2>Day wise credit summary reports,{{ currentMonth }} {{ currentYear }}</h2>
+                    <h3>{{ option.organizationName }}</h3>
+                    MATI Industries Ltd.
+                </caption>
+                <thead class="flip-content ">
+                <tr class="head-green">
+                    <th>S/N</th>
+                    <th>Name of Customer</th>
+                    <th>Eemp Id</th>
+                    <th>Details</th>
+                    <th>Gender</th>
+                    {% set max =  "now"|date("t") %}
+                    {% set today =  "now"|date("d") %}
+                    {% set month =  "now"|date("Y/m/") %}
+                    {% set year =  "now"|date("Y") %}
+                    {% set currentMonth =  "now"|date("F") %}
+                    {% for i in 1..max %}
+                        {% set blackO = date(month~i)|date('m/d/Y') %}
+                        <th class="text-center" >{{ i }}</th>
+                    {% endfor %}
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in customers  %}
+                    {% set customerTotal = 0 %}
+                    <tr>
+                        <th>{{ loop.index }}</th>
+                        <td class=""><span class="">{{ user.name }}</td>
+                        <td class="">{{ user.employeeId }}</td>
+                        <td class="">{{ user.profession }}, {{ user.department }}, {{ user.line }},{{ user.section }}</td>
+                        <td class="">{{ user.gender }}</td>
+                        {% for i in 1..max %}
+                            {% set blackO = user['customerId']~'-'~i %}
+                            <td>
+                                {% if blackO is defined and entities[blackO] is defined and entities[blackO] is not empty %}
+                                    {% set customerTotal = customerTotal + entities[blackO] %}
+                                    {{ entities[blackO]|default(0)|number_format }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <th>{{ customerTotal|number_format }}</th>
+                    </tr>
+                {% endfor %}
+                <th colspan="5" class="text-right">Grand Total</th>
+                {% set totalMonthSales = 0 %}
+                {% for i in 1..max %}
+                    <th> {% if daylies is defined and daylies[i] is defined and daylies[i] is not empty %}
+                            {% set totalMonthSales = totalMonthSales + daylies[i]|default(0)  %}
+                            {{ daylies[i]|number_format }}
+                        {% endif %}</th>
+                {% endfor %}
+                <th>{{ totalMonthSales|number_format }}</th>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function exportExcel() {
+            var table = document.querySelector('#downloadExcel');
+            TableToExcel.convert(table);
+        }
+    </script>
+{% endblock %}

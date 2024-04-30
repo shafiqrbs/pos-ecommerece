@@ -1,0 +1,48 @@
+ItemCategory:
+    path:     /
+    defaults: { _controller: "EcommerceBundle:ItemCategory:index" }
+
+itemcategory_show:
+    path:     /{id}/show
+    defaults: { _controller: "EcommerceBundle:ItemCategory:show" }
+
+itemcategory_new:
+    path:     /new
+    defaults: { _controller: "EcommerceBundle:ItemCategory:new" }
+
+itemcategory_create:
+    path:     /create
+    defaults: { _controller: "EcommerceBundle:ItemCategory:create" }
+    requirements: { _method: post }
+
+itemcategory_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EcommerceBundle:ItemCategory:edit" }
+
+itemcategory_status:
+    path:     /{id}/status
+    defaults: { _controller: "EcommerceBundle:ItemCategory:status" }
+
+itemcategory_sorting:
+    path:     /sorting
+    defaults: { _controller: "EcommerceBundle:ItemCategory:sorting" }
+
+itemcategory_sorted:
+    path:     /sorted
+    defaults: { _controller: "EcommerceBundle:ItemCategory:sorted" }
+
+itemcategory_update:
+    path:     /{id}/update
+    defaults: { _controller: "EcommerceBundle:ItemCategory:update" }
+    requirements: { _method: post|put }
+
+itemcategory_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EcommerceBundle:ItemCategory:delete" }
+    requirements: { _method: post|delete }
+
+itemcategory_feature:
+   path:     /feature
+   defaults: { _controller: "EcommerceBundle:ItemCategory:feature" }
+   requirements: { _method: post }
+
